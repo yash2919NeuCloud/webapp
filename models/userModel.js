@@ -45,11 +45,21 @@ const bcrypt = require('bcrypt');
     },
     account_updated: {
       type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+      allowNull: false,
       readOnly: true,
     },
   }, {
-    timestamps: false, // Disable Sequelize's default timestamps (created_at, updated_at)
+    timestamps: false,
   });
+
+  User.prototype.comparePassword = function(candidatePassword) {
+    return bcrypt.compareSync(candidatePassword, this.password);
+  };
+  User.prototype.updatePassword = function (newPassword) {
+    const saltRounds = 10;
+    const hashedPassword = bcrypt.hashSync(newPassword, saltRounds);
+    this.setDataValue('password', hashedPassword);
+  };
   
   module.exports = User;
-  

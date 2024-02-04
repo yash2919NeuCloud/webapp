@@ -1,6 +1,11 @@
 const healthzService = require('../services/healthzService');
 
 async function healthz(req, res) {
+  if (Object.keys(req.body).length > 0) {
+    
+    res.status(400).header('Cache-Control', 'no-cache').send();
+    return;
+  }
     try {
         const isDatabaseConnected = await healthzService.checkDatabaseConnection();
         console.log('isDatabaseConnected:', isDatabaseConnected);
@@ -18,4 +23,9 @@ async function healthz(req, res) {
               }
   }
 
-  module.exports = {healthz };
+  async function notAllowed(req, res) {
+    console.log('notAllowed');
+    res.status(405).header('Cache-Control', 'no-cache').send();
+  }
+
+  module.exports = {healthz,notAllowed };

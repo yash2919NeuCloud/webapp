@@ -4,7 +4,11 @@
   "description": "Cloud Assignments",
   "main": "server.js",
   "scripts": {
+<<<<<<< HEAD
     "test": "echo 'Running tests...'",
+=======
+    "test": "echo \"Error: no test specified\" && exit 1",
+>>>>>>> a7d4b3f (Package.json added)
     "start": "node server.js"
   },
   "repository": {
@@ -16,6 +20,7 @@
   "bugs": {
     "url": "https://github.com/yash2919/webapp-fork/issues"
   },
+<<<<<<< HEAD
   "homepage": "https://github.com/yash2919/webapp-fork#readme",
   "dependencies": {
     "bcrypt": "^5.1.1",
@@ -25,4 +30,7 @@
     "sequelize": "^6.36.0",
     "sequelize-cli": "^6.6.2"
   }
+=======
+  "homepage": "https://github.com/yash2919/webapp-fork#readme"
+>>>>>>> a7d4b3f (Package.json added)
 }

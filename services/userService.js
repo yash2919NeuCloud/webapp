@@ -6,13 +6,10 @@ async function createUser(first_name, last_name, password, username ) {
     if (existingUser) {
         throw new Error('User Exists!');
     }
-<<<<<<< HEAD
     if(!first_name.trim() || !last_name.trim() || !password.trim() || !username.trim())
     {
         throw new Error('Invalid Input');
     }
-=======
->>>>>>> c082296 (Api code addes)
     const newUser = await User.create({
         first_name,
         last_name,
@@ -28,11 +25,6 @@ async function getUser(authHeader) {
   const base64Credentials = authHeader.split(' ')[1];
   const credentials = Buffer.from(base64Credentials, 'base64').toString('utf-8');
   const [username, password] = credentials.split(':');
-<<<<<<< HEAD
-=======
-  // console.log('Username:', username);
-  // console.log('Password:', password);
->>>>>>> c082296 (Api code addes)
   const user = await User.findOne({ where: { username } });
   
   if (!user) {

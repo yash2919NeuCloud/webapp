@@ -1,0 +1,48 @@
+name: Node.js Build and Test
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Compile code
+        run: npm run build  # Adjust this command based on your project setup
+
+      - name: Run tests
+        run: npm test  # Adjust this command based on your project setup
+
+  merge-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Merge check
+        run: echo "Merging is allowed only if this step succeeds"  # You can add custom merge checks here
+
+# Additional steps can be added based on your project requirements

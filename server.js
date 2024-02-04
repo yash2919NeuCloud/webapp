@@ -9,21 +9,13 @@ app.use(bodyParser.json());
 const { Sequelize, DataTypes } = require('sequelize');
 const User = require('./models/userModel');
 const healthzRouter = require('./routes/healthzRouter');
+const userRouter = require('./routes/userRouter');
+const { sequelize } = require('./config/config'); // Import your Sequelize instance
 
 
-// const sequelize = new Sequelize(process.env.DB_DATABASE, process.env.DB_USER, process.env.DB_PASSWORD, {
-//   dialect: 'mysql',
-//   host: process.env.DB_HOST,
-// });
 
-// sequelize.sync();
+sequelize.sync({ force: true }) 
 
-app.use((req, res, next) => {
-  if (req.method !== 'GET') {
-    return res.status(405).header('Cache-Control', 'no-cache').send();
-  }
-  next();
-});
 
 app.use((err, req, res, next) => {
   if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
@@ -35,6 +27,8 @@ app.use((err, req, res, next) => {
 });
 
 app.use('/healthz', healthzRouter);
+app.use('/v1/user', userRouter);
+
 
 // app.get('/healthz', async (req, res) => {
 //   try {

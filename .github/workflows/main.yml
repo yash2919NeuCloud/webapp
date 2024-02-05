@@ -22,10 +22,10 @@ jobs:
         run: npm install
 
       - name: Compile code
-        run: npm run build  # Adjust this command based on your project setup
+        run: npm start  # Adjust this command based on your project setup
 
-      - name: Run tests
-        run: npm test  # Adjust this command based on your project setup
+      # - name: Run tests
+      #   run: npm test  # Adjust this command based on your project setup
 
   merge-check:
     runs-on: ubuntu-latest

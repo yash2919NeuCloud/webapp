@@ -25,10 +25,8 @@ async function checkDatabaseConnection() {
           resolve(true);
         }
   
-     
         connection.removeListener('error', reject);
-  
-       
+
         connection.end();
       });
     });

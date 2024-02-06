@@ -6,6 +6,10 @@ async function createUser(first_name, last_name, password, username ) {
     if (existingUser) {
         throw new Error('User Exists!');
     }
+    if(!first_name.trim() || !last_name.trim() || !password.trim() || !username.trim())
+    {
+        throw new Error('Invalid Input');
+    }
     const newUser = await User.create({
         first_name,
         last_name,
@@ -21,8 +25,6 @@ async function getUser(authHeader) {
   const base64Credentials = authHeader.split(' ')[1];
   const credentials = Buffer.from(base64Credentials, 'base64').toString('utf-8');
   const [username, password] = credentials.split(':');
-  // console.log('Username:', username);
-  // console.log('Password:', password);
   const user = await User.findOne({ where: { username } });
   
   if (!user) {
@@ -49,6 +51,10 @@ async function updateUser(authHeader, first_name, last_name, newpass) {
   if (!user.comparePassword(password)) {
     console.log('Password)',password);
     throw new Error('Invalid password');
+  }
+  if(!first_name.trim() || !last_name.trim() || !newpass.trim())
+  {
+    throw new Error('Invalid Input');
   }
   if(first_name)
   user.first_name = first_name;

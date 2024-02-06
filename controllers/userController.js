@@ -2,6 +2,12 @@ const userService = require('../services/userService');
 
 async function getUser(req, res) {
   try{
+
+    if (Object.keys(req.body).length > 0 ) {
+    
+      res.status(400).header('Cache-Control', 'no-cache').send();
+      return;
+    }
   const authHeader = req.headers.authorization;
   const User = await userService.getUser(authHeader);
   const responseObject = {
@@ -28,6 +34,27 @@ async function getUser(req, res) {
 
   async function createUser(req, res) {
     try {
+      if (Object.keys(req.body).length !== 4) {
+        res.status(400).header('Cache-Control', 'no-cache').send();
+        return;
+      }
+      const seenKeys = new Set();
+
+      for (const key in req.body) {
+        if (seenKeys.has(key)) {
+          console.log('key:', key);
+          return res.status(400).json({ error: 'Duplicate keys in the request body' });
+        }
+        
+        seenKeys.add(key);
+      }
+    
+      const updatedFields = Object.keys(req.body);
+      const allowedFields = ['first_name', 'last_name', 'password','username'];
+  
+      if (!updatedFields.every(field => allowedFields.includes(field))) {
+        return res.status(400).send();
+      }
         const { first_name, last_name, password, username } = req.body;
         const newUser = await userService.createUser(first_name, last_name, password, username);
 
@@ -57,6 +84,10 @@ async function getUser(req, res) {
 
   async function updateUser(req, res) {
     try {
+      if (Object.keys(req.body).length !== 3) {
+        res.status(400).header('Cache-Control', 'no-cache').send();
+        return;
+      }
       const updatedFields = Object.keys(req.body);
       const allowedFields = ['first_name', 'last_name', 'password'];
   

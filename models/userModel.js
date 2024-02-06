@@ -1,5 +1,5 @@
 const { Sequelize, DataTypes } = require('sequelize');
-const { sequelize } = require('../config/config'); // Import your Sequelize instance
+const { sequelize } = require('../config/config'); 
 const bcrypt = require('bcrypt');
 
   
@@ -14,14 +14,34 @@ const bcrypt = require('bcrypt');
     first_name: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        notEmpty: true,
+        isAlpha: {
+          msg: 'First name should only contain letters',
+        },
+      },
     },
     last_name: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        notEmpty: true,
+        isAlpha: {
+          msg: 'Last name should only contain letters',
+        },
+      },
     },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        notEmpty: true,
+        noSpaces(value) {
+          if (value.trim() === '') {
+            throw new Error('Password cannot be only spaces');
+          }
+        },
+      },
       set(value) {
         const saltRounds = 10; 
         const hashedPassword = bcrypt.hashSync(value, saltRounds);
@@ -35,6 +55,7 @@ const bcrypt = require('bcrypt');
       unique: true,
       validate: {
         isEmail: true,
+        notEmpty: true
       },
     },
     account_created: {

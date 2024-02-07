@@ -3,4 +3,5 @@ Cloud Assignments
 
 # Assignment 1 -
 # StartUp Commands-
-1) node server.js
+1) npm i
+2) node server.js

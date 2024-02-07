@@ -1,7 +1,15 @@
 const userService = require('../services/userService');
+const healthzService = require('../services/healthzService');
 
 async function getUser(req, res) {
-  try{
+  try {
+    const isDatabaseConnected = await healthzService.checkDatabaseConnection();
+          } catch (error) {
+            
+            console.error('Error checking database connection:',error);
+            return res.status(503).header('Cache-Control', 'no-cache').send();
+          }
+  try{    
 
     if (Object.keys(req.body).length > 0 ) {
     
@@ -33,6 +41,13 @@ async function getUser(req, res) {
   }
 
   async function createUser(req, res) {
+    try {
+      const isDatabaseConnected = await healthzService.checkDatabaseConnection();
+            } catch (error) {
+              
+              console.error('Error checking database connection:',error);
+              return res.status(503).header('Cache-Control', 'no-cache').send();
+            }
     try {
       if (Object.keys(req.body).length !== 4) {
         res.status(400).header('Cache-Control', 'no-cache').send();
@@ -84,6 +99,14 @@ async function getUser(req, res) {
 
   async function updateUser(req, res) {
     try {
+      const isDatabaseConnected = await healthzService.checkDatabaseConnection();
+            } catch (error) {
+              
+              console.error('Error checking database connection:',error);
+              return res.status(503).header('Cache-Control', 'no-cache').send();
+            }
+    try {
+      
       if (Object.keys(req.body).length !== 3) {
         res.status(400).header('Cache-Control', 'no-cache').send();
         return;

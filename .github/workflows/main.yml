@@ -1,17 +1,19 @@
 name: Node.js CI
 
 on:
+  push:
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
 jobs:
-  build-as2:
+  build-and-test:
 
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [14.x, 16.x, 18.x]
 
     outputs:
       job-status: ${{ steps.job-status.outputs.status }}

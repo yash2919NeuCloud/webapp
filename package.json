@@ -4,7 +4,7 @@
   "description": "Cloud Assignments",
   "main": "server.js",
   "scripts": {
-    "test": "echo 'Running tests...Passes all tests'",
+    "test": "echo 'Running tests...'",
     "start": "node server.js"
   },
   "repository": {

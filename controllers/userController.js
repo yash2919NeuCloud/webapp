@@ -125,7 +125,7 @@ async function getUser(req, res) {
 
               } catch (error) {
                 
-                res.status(400).send();
+                res.status(401).send();
               }
   }
 

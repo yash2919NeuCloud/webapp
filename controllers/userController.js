@@ -1,5 +1,6 @@
 const userService = require('../services/userService');
 const healthzService = require('../services/healthzService');
+const e = require('express');
 
 async function getUser(req, res) {
   try {
@@ -124,7 +125,7 @@ async function getUser(req, res) {
 
 
               } catch (error) {
-                
+                console.log(error);
                 res.status(401).send();
               }
   }

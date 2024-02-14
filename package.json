@@ -4,7 +4,7 @@
   "description": "Cloud Assignments",
   "main": "server.js",
   "scripts": {
-    "test": "npx jest",
+    "test": "npx jest --forceExit",
     "start": "node server.js"
   },
   "repository": {

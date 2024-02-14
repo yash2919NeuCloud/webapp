@@ -19,8 +19,7 @@ describe('Integration Tests', () => {
 })
 
 afterAll(async () => {
-  jest.clearAllMocks();
-  await sequelize.close();
+  await sequelize.sync({ force: true }) 
 })
 
   it('Test 1: Create an account and validate account existence with GET call', async () => {

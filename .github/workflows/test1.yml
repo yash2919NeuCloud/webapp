@@ -6,17 +6,19 @@ jobs:
   test:
     runs-on: ubuntu-latest
     environment: webappforkenv
-    env:
-          MYSQL_ROOT_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          MYSQL_DATABASE: ${{ secrets.DB_DATABASE }}
+
     services:
       mysql:
         image: mysql:8.0
+        ports:
+          - 3306/tcp
         env:
           MYSQL_ROOT_PASSWORD: ${{ secrets.DB_PASSWORD }}
           MYSQL_DATABASE: ${{ secrets.DB_DATABASE }}
-        ports:
-          - 3306:3306
+          MYSQL_USER: ${{ secrets.DB_USERNAME }}
+          MYSQL_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          MYSQL_HOST: ${{ secrets.DB_HOST }}
+        
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:

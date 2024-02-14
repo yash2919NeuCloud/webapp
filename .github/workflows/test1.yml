@@ -30,7 +30,7 @@ jobs:
 
       - name: Connect to MySQL and change password
         run: |
-         mysql --host 127.0.0.1 -uroot -p${{ secrets.DB_PASSWORD }} -e "CREATE DATABASE ${{ secrets.DB_DATABASE }};"
+         mysql --host 127.0.0.1 -uroot -p${{ secrets.DB_PASSWORD }} -e "CREATE DATABASE IF NOT EXISTS ${{ secrets.DB_DATABASE }};"
           
       - name: Check Node.js and npm versions
         run: |

@@ -9,8 +9,6 @@ on: [push, pull_request]
 jobs:
   test:
     runs-on: ubuntu-latest
-    environment: webappforkenv
-
     services:
       mysql:
         image: mysql:8.0

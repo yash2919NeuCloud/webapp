@@ -23,7 +23,7 @@ jobs:
 
     steps:
       - name: Wait for MySQL to start 1
-        run: echo "Pass is ${{ secrets.DB_PASSWORD }}"
+        run: echo "Username is ${{ secrets.DB_USERNAME }}"
       - name: Wait for MySQL to start
         run: |
           echo "Waiting for MySQL to start..."

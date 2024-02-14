@@ -9,22 +9,22 @@ on: [push, pull_request]
 jobs:
   test:
     runs-on: ubuntu-latest
-    services:
-      mysql:
-        image: mysql:8.0
-        ports:
-          - 3306:3306
-        env:
-          MYSQL_ROOT_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          MYSQL_DATABASE: ${{ secrets.DB_DATABASE }}
-          MYSQL_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          MYSQL_HOST: ${{ secrets.DB_HOST }}
+    # services:
+    #   mysql:
+    #     image: mysql:8.0
+    #     ports:
+    #       - 3306:3306
+    #     env:
+    #       MYSQL_ROOT_PASSWORD: ${{ secrets.DB_PASSWORD }}
+    #       MYSQL_DATABASE: ${{ secrets.DB_DATABASE }}
+    #       MYSQL_PASSWORD: ${{ secrets.DB_PASSWORD }}
+    #       MYSQL_HOST: ${{ secrets.DB_HOST }}
         
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    #     options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
       - name: Wait for MySQL to start 1
-        run: echo "Username is ${{ secrets.DB_HOST }}"
+        run: echo "Username is ${{ secrets.DB_DATABASE }}"
       # - name: Wait for MySQL to start
       #   run: |
       #     echo "Waiting for MySQL to start..."

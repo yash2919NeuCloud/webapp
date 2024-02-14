@@ -30,7 +30,7 @@ jobs:
 
       - name: Connect to MySQL and change password
         run: |
-            mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED BY ${{ secrets.DB_PASSWORD }};"
+          mysql -h $MYSQL_HOST -u $MYSQL_USER -p$MYSQL_PASSWORD -e "CREATE DATABASE IF NOT EXISTS $DATABASE_NAME;"
           
       - name: Check Node.js and npm versions
         run: |

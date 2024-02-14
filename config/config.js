@@ -7,13 +7,7 @@ try {
     dialect: 'mysql',
     host: process.env.DB_HOST ,
   });
-  sequelize.query('CREATE DATABASE IF NOT EXISTS database1;')
-  .then(() => {
-    console.log('Database created or already exists.');
-  })
-  .catch((err) => {
-    console.error('Error creating database:', err);
-  });
+
 
 } catch (error) {
 

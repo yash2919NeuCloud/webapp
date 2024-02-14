@@ -28,9 +28,9 @@ jobs:
           echo "Waiting for MySQL to start..."
           sleep 20
 
-      - name: Connect to MySQL and change root password
+      - name: Connect to MySQL and change password
         run: |
-            mysql -u root -h 127.0.0.1 -p"${{ secrets.DB_PASSWORD }}" -e "ALTER USER 'root'@'localhost' IDENTIFIED BY ${{ secrets.DB_PASSWORD }};"
+            mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED BY ${{ secrets.DB_PASSWORD }};"
           
       - name: Check Node.js and npm versions
         run: |

@@ -41,7 +41,7 @@ afterAll(async () => {
   expect(getUserResponse.status).toBe(200);
  
   });
-  it('Test 2: Create an account and validate account existence with GET call', async () => {
+  it('Test 2: Update the account and using the GET call, validate the account was updated.', async () => {
 
     const updatedUserData = {
       first_name: 'firstnameupdated',

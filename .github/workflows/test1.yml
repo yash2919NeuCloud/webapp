@@ -30,7 +30,8 @@ jobs:
 
       - name: Connect to MySQL and change password
         run: |
-          mysql -u ${{ secrets.DB_USER }} -e "CREATE DATABASE IF NOT EXISTS ${{ secrets.DB_PASSWORD }};"
+         sudo apt-get install -y mysql-client 
+         mysql --host 127.0.0.1 -uroot -p${{ secrets.DB_PASSWORD }} -e "SHOW DATABASES;"
           
       - name: Check Node.js and npm versions
         run: |

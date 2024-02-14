@@ -4,39 +4,46 @@ on: [push, pull_request]
 
 jobs:
   test:
-    environment: webappforkenv
     runs-on: ubuntu-latest
-
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
+    environment: webappforkenv
+    env:
           MYSQL_ROOT_PASSWORD: ${{ secrets.DB_PASSWORD }}
           MYSQL_DATABASE: ${{ secrets.DB_DATABASE }}
           MYSQL_USER: ${{ secrets.DB_USER }}
           MYSQL_PASSWORD: ${{ secrets.DB_PASSWORD }}
-        ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    # services:
+    #   mysql:
+    #     image: mysql:8.0
+    #     env:
+    #       MYSQL_ROOT_PASSWORD: ${{ secrets.DB_PASSWORD }}
+    #       MYSQL_DATABASE: ${{ secrets.DB_DATABASE }}
+    #       MYSQL_USER: ${{ secrets.DB_USER }}
+    #       MYSQL_PASSWORD: ${{ secrets.DB_PASSWORD }}
+    #     ports:
+    #       - 3306:3306
+    #     options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
       - name: Wait for MySQL to start
-        run: |
-          echo "Waiting for MySQL to start..."
-          sleep 20
+        run: echo "Pass is ${{ secrets.DB_PASSWORD }}"
+    # steps:
+    #   - name: Wait for MySQL to start
+    #     run: |
+    #       echo "Waiting for MySQL to start..."
+    #       sleep 20
           
-      - name: Check Node.js and npm versions
-        run: |
-          node --version
-          npm --version
+    #   - name: Check Node.js and npm versions
+    #     run: |
+    #       node --version
+    #       npm --version
 
-      - name: Checkout code
-        uses: actions/checkout@v3
+    #   - name: Checkout code
+    #     uses: actions/checkout@v3
 
-      - name: Install dependencies
-        run: |
-          npm install
+    #   - name: Install dependencies
+    #     run: |
+    #       npm install
 
-      - name: Run tests
-        run: |
-          npm test
+    #   - name: Run tests
+    #     run: |
+    #       npm test

@@ -1,9 +1,13 @@
 name: MySQL Setup and Test
 env:
-  DB_USER: ${{ secrets.DB_USER }}
-  DB_DATABASE: ${{ secrets.DB_DATABASE }}
-  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-  DB_HOST: ${{ secrets.DB_HOST }}
+  DB_USER: 'root'
+  DB_DATABASE: 'database1'
+  DB_PASSWORD: 'root'
+  DB_HOST: 'localhost'
+  MYSQL_ROOT_PASSWORD: 'root'
+  MYSQL_DATABASE: 'database1'
+  MYSQL_PASSWORD: 'root'
+  MYSQL_HOST: 'localhost'
 
 on: [push, pull_request]
 
@@ -24,15 +28,21 @@ jobs:
         # options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
-      name: Install MySQL
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y mysql-server
-        sudo systemctl start mysql.service
+      - name: Install MySQL
+        run: |
+         # sudo apt-get update
+         sudo apt-get install -y mysql-server
+         sudo systemctl start mysql.service
 
+      # - name: Configure MySQL
+      #   run: |
+      #    sudo mysql --user=root --password=root
+      #   #  "ALTER USER 'root'@'localhost' IDENTIFIED BY '${{ secrets.DB_PASSWORD }}'";
+      #   #  "CREATE DATABASE IF NOT EXISTS ${{ secrets.DB_DATABASE }};"
+   
       - name: Connect to MySQL and create database
         run: |
-         mysql --host ${{ secrets.DB_HOST }} -u${{ secrets.DB_USER }} -p${{ secrets.DB_PASSWORD }} -e "CREATE DATABASE IF NOT EXISTS ${{ secrets.DB_DATABASE }};"
+         sudo mysql --user=root --password=root -e "CREATE DATABASE IF NOT EXISTS ${{ secrets.DB_DATABASE }};"
           
       - name: Check Node.js and npm versions
         run: |

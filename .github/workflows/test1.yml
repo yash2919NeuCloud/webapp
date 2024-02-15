@@ -1,31 +1,15 @@
 name: MySQL Setup and Test
 env:
-  DB_USER: 'root'
-  DB_DATABASE: 'database1'
-  DB_PASSWORD: 'root'
-  DB_HOST: '127.0.0.1'
-  MYSQL_ROOT_PASSWORD: 'root'
-  MYSQL_DATABASE: 'database1'
-  MYSQL_PASSWORD: 'root'
-  MYSQL_HOST: '127.0.0.1'
+  DB_USER: ${{ secrets.DB_USER }}
+  DB_DATABASE: ${{ secrets.DB_DATABASE }}
+  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+  DB_HOST: ${{ secrets.DB_HOST }}
 
 on: [push, pull_request]
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    # services:
-    #   mysql:
-    #     image: mysql:8.0
-    #     ports:
-    #       - 3306:3306
-    #     env:
-    #       MYSQL_ROOT_PASSWORD: ${{ secrets.DB_PASSWORD }}
-    #       MYSQL_DATABASE: ${{ secrets.DB_DATABASE }}
-    #       MYSQL_PASSWORD: ${{ secrets.DB_PASSWORD }}
-    #       MYSQL_HOST: ${{ secrets.DB_HOST }}
-        
-        # options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
       - name: Install MySQL
@@ -42,7 +26,7 @@ jobs:
    
       - name: Connect to MySQL and create database
         run: |
-         sudo mysql --user=root --password=root -e "CREATE DATABASE IF NOT EXISTS ${{ secrets.DB_DATABASE }};"
+         sudo mysql --user=${{ secrets.DB_USER }} --password=${{ secrets.DB_PASSWORD }} -e "CREATE DATABASE IF NOT EXISTS ${{ secrets.DB_DATABASE }};"
           
       - name: Check Node.js and npm versions
         run: |

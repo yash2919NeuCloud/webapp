@@ -18,8 +18,11 @@ jobs:
           version: 1.8.6
         
       - name: switch to packer directory
-        run: cd packer
-            
+        run: |
+          ls
+          pwd
+          cd Packer
+
       - name: Check Packer Formatting
         run: |
            if packer fmt -check .; then

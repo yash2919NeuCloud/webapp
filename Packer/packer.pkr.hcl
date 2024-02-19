@@ -31,15 +31,15 @@ build {
     inline = ["mkdir -p /home/centos"]
   }
 
-  provisioner "file" {
-    destination = "/home/centos/Yash_Nahata_002207385_04.zip"
-    source      = "C:/Users/yashn/Downloads/Yash_Nahata_002207385_04.zip"
-  }
+  // provisioner "file" {
+  //   destination = "/home/centos/Yash_Nahata_002207385_04.zip"
+  //   source      = "C:/Users/yashn/Downloads/Yash_Nahata_002207385_04.zip"
+  // }
 
-  provisioner "file" {
-    destination = "/home/centos/app.service"
-    source      = "C:/Users/yashn/Desktop/cloudassignments/webapp/Packer/app.service"
-  }
+  // provisioner "file" {
+  //   destination = "/home/centos/app.service"
+  //   source      = "C:/Users/yashn/Desktop/cloudassignments/webapp/Packer/app.service"
+  // }
 
   provisioner "shell" {
     script = "dependencies.sh"

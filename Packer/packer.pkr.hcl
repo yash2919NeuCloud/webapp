@@ -8,9 +8,12 @@ packer {
   }
 }
 
+variable "GCP_DEV_KEY" {
+  type        = string
+}
 
 source "googlecompute" "custom-image" {
-  credentials_file    = "devproj-414701-286fc87f422e.json"
+  credentials_json = "${var.GCP_DEV_KEY}"
   disk_size           = "100"
   disk_type           = "pd-standard"
   image_family        = "custom-app-family"

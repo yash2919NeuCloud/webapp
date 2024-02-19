@@ -17,15 +17,14 @@ jobs:
         with:
           version: 1.8.6
         
-      - name: switch to packer directory
+      - name: Initial Setup
         run: |
-          ls
-          pwd
           cd Packer
-          ls
+          packer init .
 
       - name: Check Packer Formatting
         run: |
+           cd Packer
            if packer fmt -check .; then
             echo "Packer files are formatted correctly."
            else

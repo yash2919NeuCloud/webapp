@@ -17,6 +17,9 @@ jobs:
         with:
           version: 1.8.6
         
+      - name: switch to packer directory
+        run: cd packer
+            
       - name: Check Packer Formatting
         run: |
            if packer fmt -check .; then

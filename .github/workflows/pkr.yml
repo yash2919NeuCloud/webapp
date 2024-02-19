@@ -1,0 +1,38 @@
+name: Packer Formatting Check
+
+on:
+  pull_request:
+    paths:
+      - 'packer/**'
+
+
+jobs:
+  packer:
+    runs-on: ubuntu-latest
+    name: Run Packer
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup `packer`
+        uses: hashicorp/setup-packer@main
+        id: setup
+        with:
+          version: 1.8.6
+        
+      - name: Check Packer Formatting
+        run: |
+           if packer fmt -check .; then
+            echo "Packer files are formatted correctly."
+           else
+            echo "Packer files are not formatted correctly. Please run 'packer fmt' locally."
+            exit 1  # Fail the workflow
+           fi
+      - name: Validate Packer Configuration
+        run: |
+             if packer validate .; then
+               echo "Packer configuration is valid."
+             else
+               echo "Packer configuration is not valid."
+               exit 1  # Fail the workflow
+             fi      

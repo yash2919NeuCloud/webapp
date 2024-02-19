@@ -1,0 +1,45 @@
+
+packer {
+  required_plugins {
+    googlecompute = {
+      source  = "github.com/hashicorp/googlecompute"
+      version = "~> 1"
+    }
+  }
+}
+
+
+source "googlecompute" "custom-image" {
+  credentials_file    = "devproj-414701-286fc87f422e.json"
+  disk_size           = "100"
+  disk_type           = "pd-standard"
+  image_family        = "custom-app-family"
+  image_name          = "custom-app-image"
+  project_id          = "devproj-414701"
+  source_image_family = "centos-stream-8"
+  ssh_username        = "centos"
+  zone                = "us-east1-b"
+}
+
+build {
+  sources = ["googlecompute.custom-image"]
+
+  provisioner "shell" {
+    inline = ["mkdir -p /home/centos"]
+  }
+
+  provisioner "file" {
+    destination = "/home/centos/Yash_Nahata_002207385_04.zip"
+    source      = "C:/Users/yashn/Downloads/Yash_Nahata_002207385_04.zip"
+  }
+
+  provisioner "file" {
+    destination = "/home/centos/app.service"
+    source      = "C:/Users/yashn/Desktop/cloudassignments/webapp/Packer/app.service"
+  }
+
+  provisioner "shell" {
+    script = "dependencies.sh"
+  }
+
+}

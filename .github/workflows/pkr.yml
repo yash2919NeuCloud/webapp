@@ -1,9 +1,6 @@
 name: Packer Formatting Check
 
-on:
-  pull_request:
-    paths:
-      - 'packer/**'
+on: [push, pull_request]
 
 
 jobs:

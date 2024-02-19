@@ -22,17 +22,19 @@ jobs:
           ls
           pwd
           cd Packer
+          ls
 
       - name: Check Packer Formatting
         run: |
            if packer fmt -check .; then
             echo "Packer files are formatted correctly."
            else
-            echo "Packer files are not formatted correctly. Please run 'packer fmt' locally."
+            echo "Packer files are not formatted correctly."
             exit 1  # Fail the workflow
            fi
       - name: Validate Packer Configuration
         run: |
+             cd Packer
              if packer validate .; then
                echo "Packer configuration is valid."
              else

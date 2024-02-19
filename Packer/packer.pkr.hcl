@@ -9,11 +9,11 @@ packer {
 }
 
 variable "GCP_DEV_KEY" {
-  type        = string
+  type = string
 }
 
 source "googlecompute" "custom-image" {
-  credentials_json = "${var.GCP_DEV_KEY}"
+  credentials_json    = "${var.GCP_DEV_KEY}"
   disk_size           = "100"
   disk_type           = "pd-standard"
   image_family        = "custom-app-family"

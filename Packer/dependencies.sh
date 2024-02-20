@@ -2,6 +2,8 @@
 
 sudo dnf update
 
+
+
 # Install NodeJS
 sudo dnf module enable nodejs:16 -y
 sudo dnf install nodejs -y
@@ -25,7 +27,14 @@ sudo yum install -y unzip
 # unzip usr/bin/home/centos/Yash_Nahata_002207385_03.zip -d /home/centos/cd home/centos/Yash_Nahata_002207385_03 
 # cd usr/bin/home/centos
 echo "Current directory: $(pwd)"
-unzip Yash_Nahata_002207385_04.zip
+unzip webapp.zip
+
+#create ENV file
+echo "DB_HOST=localhost" | sudo tee /home/centos/webapp/.env
+echo "DB_USER=root" | sudo tee -a /home/centos/webapp/.env
+echo "DB_PASSWORD=Yashnahta291*" | sudo tee -a /home/centos/webapp/.env
+echo "DB_DATABASE=database1" | sudo tee -a /home/centos/webapp/.env
+
 cd Yash_Nahata_002207385_04/webapp
 
 npm i
@@ -33,7 +42,7 @@ cd ..
 cd ..
 ls
 
-sudo chcon -t systemd_unit_file_t /home/centos/Yash_Nahata_002207385_04/webapp/.env
+sudo chcon -t systemd_unit_file_t /home/centos/webapp/.env
 # Add user and group
 sudo groupadd csye6225
 sudo useradd -M -g csye6225 -s /usr/sbin/nologin csye6225

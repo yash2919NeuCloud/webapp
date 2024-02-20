@@ -1,6 +1,6 @@
 [Unit]
 Description= NodeJS app
-ConditionPathExists=/home/centos/webapp
+ConditionPathExists=/home/centos
 After=network.target
 
 [Service]
@@ -8,8 +8,8 @@ Type=simple
 User=csye6225
 Group=csye6225
 WorkingDirectory=/home/centos
-EnvironmentFile=/home/centos/webapp/.env
-ExecStart=/usr/bin/node /home/centos/webapp/server.js
+EnvironmentFile=/home/centos/.env
+ExecStart=/usr/bin/node /home/centos/server.js
 Restart=always
 RestartSec=3
 StandardOutput=syslog

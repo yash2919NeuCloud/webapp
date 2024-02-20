@@ -1,4 +1,4 @@
-name: Packer Formatting Check
+name: Machine Image
 
 on: [push, pull_request]
 
@@ -15,6 +15,8 @@ jobs:
         run: |
          zip -r webapp.zip .
          ls
+        run: |
+         zip -r webapp.zip .
 
       - name: Setup `packer`
         uses: hashicorp/setup-packer@main
@@ -24,10 +26,8 @@ jobs:
         
       - name: Initial Setup
         run: |
-          cd Packer
-          packer init .
+          packer init ./Packer/packer.pkr.hcl
 
       - name: Run Packer Configuration for Image Creation
         run: |
-             cd Packer
-             packer build -var 'GCP_DEV_KEY= ${{ secrets.GCP_DEV_KEY }}' .
+             packer build -var 'GCP_DEV_KEY= ${{ secrets.GCP_DEV_KEY }}' ./Packer/packer.pkr.hcl

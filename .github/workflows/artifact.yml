@@ -10,20 +10,8 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Create Target Directory
-        run: |
-         ls 
-         mkdir yy
-         ls
-
-      - name: Move Repository to Folder
-        run: | 
-         ls
-         mv * yy
-         ls
-
       - name: Upload Repository as Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Yash_Nahata_002207385_04
-          path: Yash_Nahata_002207385_04
+          name: webapp
+          path: . 

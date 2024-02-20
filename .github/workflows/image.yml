@@ -14,9 +14,6 @@ jobs:
       - name: zip application
         run: |
          zip -r webapp.zip .
-         ls
-        run: |
-         zip -r webapp.zip .
 
       - name: Setup `packer`
         uses: hashicorp/setup-packer@main

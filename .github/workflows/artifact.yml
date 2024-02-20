@@ -7,18 +7,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Create Folder
-        run: mkdir Yash_Nahata_002207385_04
-
       - name: Checkout Repository
         uses: actions/checkout@v2
 
       - name: Move Repository to Folder
-        run: | 
-         mkdir Yash_Nahata_002207385_04 && mv * Yash_Nahata_002207385_04
+        run: mkdir Yash_Nahata_002207385_04 && mv * Yash_Nahata_002207385_04/
 
       - name: Upload Repository as Artifact
         uses: actions/upload-artifact@v4
         with:
           name: Yash_Nahata_002207385_04
-          path: Yash_Nahata_002207385_04/
+          path: Yash_Nahata_002207385_04

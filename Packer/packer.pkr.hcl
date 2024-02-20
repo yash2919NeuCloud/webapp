@@ -42,7 +42,7 @@ build {
   }
 
   provisioner "shell" {
-    script = "dependencies.sh"
+    script = "./Packer/dependencies.sh"
   }
 
 }

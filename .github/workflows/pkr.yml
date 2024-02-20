@@ -22,6 +22,9 @@ jobs:
           cd Packer
           packer init .
 
+      - name: zip application
+        run: zip -r webapp.zip .
+
       - name: Check Packer Formatting
         run: |
            cd Packer

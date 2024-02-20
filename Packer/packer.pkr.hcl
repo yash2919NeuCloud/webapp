@@ -38,7 +38,7 @@ build {
 
   provisioner "file" {
     destination = "/home/centos/app.service"
-    source      = "./packer/bootup.service"
+    source      = "./packer/app.service"
   }
 
   provisioner "shell" {

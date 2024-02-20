@@ -1,0 +1,17 @@
+name: Upload Repository as Artifact
+
+on: [push, pull_request]
+
+jobs:
+  upload-artifact:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Upload Repository as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifact-name
+          path: . 

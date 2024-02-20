@@ -1,4 +1,4 @@
-name: Packer Formatting Check
+name: Machine Image
 
 on: [push, pull_request]
 
@@ -14,7 +14,6 @@ jobs:
       - name: zip application
         run: |
          zip -r webapp.zip .
-         ls
 
       - name: Setup `packer`
         uses: hashicorp/setup-packer@main
@@ -24,7 +23,9 @@ jobs:
         
       - name: Initial Setup
         run: |
+          ls
           cd Packer
+          ls
           packer init .
 
       - name: Run Packer Configuration for Image Creation

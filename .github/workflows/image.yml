@@ -9,10 +9,12 @@ jobs:
     name: Run Packer
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
       - name: zip application
-        run: zip -r webapp.zip .
+        run: |
+         zip -r webapp.zip .
+         ls
 
       - name: Setup `packer`
         uses: hashicorp/setup-packer@main

@@ -23,12 +23,8 @@ jobs:
         
       - name: Initial Setup
         run: |
-          ls
-          cd Packer
-          ls
-          packer init .
+          packer init ./Packer/packer.pkr.hcl
 
       - name: Run Packer Configuration for Image Creation
         run: |
-             cd Packer
-             packer build -var 'GCP_DEV_KEY= ${{ secrets.GCP_DEV_KEY }}' .
+             packer build -var 'GCP_DEV_KEY= ${{ secrets.GCP_DEV_KEY }}' ./Packer/packer.pkr.hcl

@@ -1,0 +1,28 @@
+name: Packer Formatting Check
+
+on: [push, pull_request]
+
+
+jobs:
+  packer:
+    runs-on: ubuntu-latest
+    name: Run Packer
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup `packer`
+        uses: hashicorp/setup-packer@main
+        id: setup
+        with:
+          version: 1.8.6
+        
+      - name: Initial Setup
+        run: |
+          cd Packer
+          packer init .
+
+      - name: Run Packer Configuration for Image Creation
+        run: |
+             cd Packer
+             packer build -var 'GCP_DEV_KEY= ${{ secrets.GCP_DEV_KEY }}' .

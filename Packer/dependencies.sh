@@ -27,7 +27,7 @@ sudo yum install -y unzip
 # unzip usr/bin/home/centos/Yash_Nahata_002207385_03.zip -d /home/centos/cd home/centos/Yash_Nahata_002207385_03 
 # cd usr/bin/home/centos
 echo "Current directory: $(pwd)"
-unzip webapp.zip
+sudo unzip webapp.zip &&
 
 #create ENV file
 echo "DB_HOST=localhost" | sudo tee /home/centos/webapp/.env
@@ -35,7 +35,7 @@ echo "DB_USER=root" | sudo tee -a /home/centos/webapp/.env
 echo "DB_PASSWORD=Yashnahta291*" | sudo tee -a /home/centos/webapp/.env
 echo "DB_DATABASE=database1" | sudo tee -a /home/centos/webapp/.env
 
-cd Yash_Nahata_002207385_04/webapp
+cd webapp
 
 npm i
 cd ..

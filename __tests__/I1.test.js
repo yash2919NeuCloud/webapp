@@ -56,7 +56,7 @@ afterAll(async () => {
   .get(`/v1/user/self`)
   .set('Authorization', `Basic ${Buffer.from('jane.doe@example.com:updated_password').toString('base64')}`);
   expect(getUserResponseAfterUpdate.status).toBe(200);
-  expect(getUserResponseAfterUpdate.body.first_name).toBe("test");
+  expect(getUserResponseAfterUpdate.body.first_name).toBe(updatedUserData.first_name);
   expect(getUserResponseAfterUpdate.body.last_name).toBe(updatedUserData.last_name);
 
   });

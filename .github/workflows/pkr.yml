@@ -1,6 +1,6 @@
 name: Packer Formatting Check
 
-on: [push, pull_request]
+on: [pull_request]
 
 
 jobs:
@@ -21,6 +21,9 @@ jobs:
         run: |
           cd Packer
           packer init .
+
+      - name: zip application
+        run: zip -r webapp.zip .
 
       - name: Check Packer Formatting
         run: |

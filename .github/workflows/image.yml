@@ -1,0 +1,56 @@
+name: Machine Image
+
+on:
+  push:
+    branches: [ "main" ]
+    
+jobs:
+  packer:
+    runs-on: ubuntu-latest
+    name: Run Packer
+    steps:
+      - name: Install  and start MySQL
+        run: |
+         # sudo apt-get update
+         sudo apt-get install -y mysql-server
+         sudo systemctl start mysql.service
+   
+      - name: Connect to MySQL and create database
+        run: |
+         sudo mysql --user=${{ secrets.DB_USER }} --password=${{ secrets.DB_PASSWORD }} -e "CREATE DATABASE IF NOT EXISTS ${{ secrets.DB_DATABASE }};"
+          
+      - name: Check Node.js and npm versions
+        run: |
+          node --version
+          npm --version
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          npm install
+          
+      - name: Run tests
+        run: |
+          npm test
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: zip application
+        run: |
+         zip -r webapp.zip .
+
+      - name: Setup `packer`
+        uses: hashicorp/setup-packer@main
+        id: setup
+        with:
+          version: 1.8.6
+        
+      - name: Initial Setup
+        run: |
+          packer init ./Packer/packer.pkr.hcl
+
+      - name: Run Packer Configuration for Image Creation
+        run: |
+             packer build -var 'GCP_DEV_KEY= ${{ secrets.GCP_DEV_KEY }}' ./Packer/packer.pkr.hcl

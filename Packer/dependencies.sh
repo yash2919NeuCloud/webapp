@@ -6,8 +6,6 @@ sudo dnf update
 sudo dnf module enable nodejs:16 -y
 sudo dnf install nodejs -y
 
-node --version
-
 sudo yum install -y @mysql
 
 # # Start the MySQL service
@@ -25,20 +23,34 @@ sudo yum install -y unzip
 # unzip usr/bin/home/centos/Yash_Nahata_002207385_03.zip -d /home/centos/cd home/centos/Yash_Nahata_002207385_03 
 # cd usr/bin/home/centos
 echo "Current directory: $(pwd)"
-unzip Yash_Nahata_002207385_04.zip
-cd Yash_Nahata_002207385_04/webapp
+sudo unzip webapp.zip 
+pwd
+#create ENV file
+# Define your environment variables
 
-npm i
-cd ..
-cd ..
-ls
+DB_HOST="localhost"
+DB_USER="root"
+DB_PASSWORD="Yashnahta291*"
+DB_DATABASE="database1"
 
-sudo chcon -t systemd_unit_file_t /home/centos/Yash_Nahata_002207385_04/webapp/.env
+# Create or overwrite the .env file
+sudo cat > .env << EOF
+DB_HOST=$DB_HOST
+DB_USER=$DB_USER
+DB_PASSWORD=$DB_PASSWORD
+DB_DATABASE=$DB_DATABASE
+EOF
+
+echo ".env file created successfully."
+
+sudo npm i
+
+sudo chcon -t systemd_unit_file_t /home/centos/.env
 # Add user and group
 sudo groupadd csye6225
 sudo useradd -M -g csye6225 -s /usr/sbin/nologin csye6225
-sudo chown -R csye6225:csye6225 /home/centos
-sudo chmod -R 750  /home/centos
+sudo chown -R csye6225:csye6225 /home
+sudo chmod -R 750  /home
 
 
 sudo cp app.service /etc/systemd/system/

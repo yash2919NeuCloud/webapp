@@ -13,7 +13,7 @@ variable "GCP_DEV_KEY" {
 }
 
 source "googlecompute" "custom-image" {
-   credentials_json    = "${var.GCP_DEV_KEY}"
+  credentials_json = "${var.GCP_DEV_KEY}"
   //credentials_file    = "./Packer/devproj-414701-286fc87f422e.json"
   disk_size           = "100"
   disk_type           = "pd-standard"

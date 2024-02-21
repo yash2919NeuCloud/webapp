@@ -13,7 +13,8 @@ variable "GCP_DEV_KEY" {
 }
 
 source "googlecompute" "custom-image" {
-  credentials_json    = "${var.GCP_DEV_KEY}"
+   credentials_json    = "${var.GCP_DEV_KEY}"
+  //credentials_file    = "./Packer/devproj-414701-286fc87f422e.json"
   disk_size           = "100"
   disk_type           = "pd-standard"
   image_family        = "custom-app-family"
@@ -31,18 +32,18 @@ build {
     inline = ["mkdir -p /home/centos"]
   }
 
-  // provisioner "file" {
-  //   destination = "/home/centos/Yash_Nahata_002207385_04.zip"
-  //   source      = "C:/Users/yashn/Downloads/Yash_Nahata_002207385_04.zip"
-  // }
+  provisioner "file" {
+    destination = "/home/centos/webapp.zip"
+    source      = "webapp.zip"
+  }
 
-  // provisioner "file" {
-  //   destination = "/home/centos/app.service"
-  //   source      = "C:/Users/yashn/Desktop/cloudassignments/webapp/Packer/app.service"
-  // }
+  provisioner "file" {
+    destination = "/home/centos/app.service"
+    source      = "./Packer/app.service"
+  }
 
   provisioner "shell" {
-    script = "dependencies.sh"
+    script = "./Packer/dependencies.sh"
   }
 
 }

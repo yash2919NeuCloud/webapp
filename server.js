@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 const app = express();
-const PORT = 3389;
+const PORT = 3000;
 const mysql = require('mysql2');
 app.use(bodyParser.json());
 const { Sequelize, DataTypes } = require('sequelize');

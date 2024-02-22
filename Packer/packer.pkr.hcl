@@ -32,7 +32,7 @@ variable "image_name" {
 }
 
 variable "PROJECT_ID" {
-   type = string
+  type = string
 }
 
 variable "source_image_family" {

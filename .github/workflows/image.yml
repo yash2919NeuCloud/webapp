@@ -55,18 +55,6 @@ jobs:
         run: |
           packer init ./Packer/packer.pkr.hcl
 
-      - name: 'auth'
-        uses: 'google-github-actions/auth@v2'
-        with:
-          credentials_json: '${{ secrets.GCP_DEV_KEY }}'
-    
-      - name: 'Set up Cloud SDK'
-        uses: 'google-github-actions/setup-gcloud@v2'
-    
-      - name: 'Use gcloud CLI'
-        run: 'gcloud info'
-    
-
       - name: Run Packer Configuration for Image Creation
         run: |
-             packer build ./Packer/packer.pkr.hcl
+             packer build -var 'GCP_DEV_KEY= ${{ secrets.GCP_DEV_KEY }}' ./Packer/packer.pkr.hcl

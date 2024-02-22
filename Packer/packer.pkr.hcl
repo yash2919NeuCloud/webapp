@@ -7,9 +7,9 @@ packer {
   }
 }
 
-// variable "GCP_DEV_KEY" {
-//   type = string
-// }
+variable "GCP_DEV_KEY" {
+  type = string
+}
 
 variable "disk_size" {
   description = "The size of the disk"
@@ -31,9 +31,10 @@ variable "image_name" {
   default     = "custom-app-image"
 }
 
-// variable "PROJECT_ID" {
-//   type = string
-// }
+variable "PROJECT_ID" {
+  type    = string
+  default = "devproj-414701"
+}
 
 variable "source_image_family" {
   description = "The source image family"
@@ -51,13 +52,13 @@ variable "zone" {
 }
 
 source "googlecompute" "custom-image" {
-  //credentials_json = " ${var.GCP_DEV_KEY}"
+  credentials_json = " ${var.GCP_DEV_KEY}"
   //credentials_file    = "./Packer/devproj-414701-286fc87f422e.json"
   disk_size           = var.disk_size
   disk_type           = var.disk_type
   image_family        = var.image_family
   image_name          = var.image_name
-  //project_id          = "${var.PROJECT_ID}"
+  project_id          = var.PROJECT_ID
   source_image_family = var.source_image_family
   ssh_username        = var.ssh_username
   zone                = var.zone

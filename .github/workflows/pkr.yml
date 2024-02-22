@@ -35,7 +35,7 @@ jobs:
            fi
       - name: Validate Packer Configuration
         run: |
-             if packer validate -var 'GCP_DEV_KEY= ${{ secrets.GCP_DEV_KEY }}' ./Packer/packer.pkr.hcl; then
+             if packer validate -var 'GCP_DEV_KEY= ${{ secrets.GCP_DEV_KEY }}' -var 'PROJECT_ID= ${{ secrets.PROJECT_ID }}' ./Packer/packer.pkr.hcl; then
                echo "Packer configuration is valid."
              else
                echo "Packer configuration is not valid."

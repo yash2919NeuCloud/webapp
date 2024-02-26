@@ -8,7 +8,7 @@ app.use(bodyParser.json());
 const { Sequelize } = require('sequelize');
 const path = require('path');
 
-
+//
  const { sequelize } = require('../config/config'); 
 describe('Integration Tests', () => {
 

@@ -31,7 +31,7 @@ afterAll(async () => {
         "username": "jane.doe@example.com"
     });
 
-    expect(createUserResponse.status).toBe(400);
+    expect(createUserResponse.status).toBe(201);
 
     const getUserResponse = await request(app)
     .get(`/v1/user/self`)

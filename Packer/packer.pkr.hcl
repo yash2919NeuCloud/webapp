@@ -63,7 +63,7 @@ source "googlecompute" "custom-image" {
   ssh_username        = var.ssh_username
   zone                = var.zone
 
-
+  }
 
 build {
   sources = ["googlecompute.custom-image"]

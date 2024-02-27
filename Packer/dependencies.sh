@@ -45,7 +45,7 @@ pwd
 
 sudo npm i
 
-sudo chcon -t systemd_unit_file_t /home/centos/.env
+# sudo chcon -t systemd_unit_file_t /home/centos/.env
 # Add user and group
 sudo groupadd csye6225
 sudo useradd -M -g csye6225 -s /usr/sbin/nologin csye6225

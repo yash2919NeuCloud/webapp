@@ -6,15 +6,15 @@ sudo dnf update
 sudo dnf module enable nodejs:16 -y
 sudo dnf install nodejs -y
 
-sudo yum install -y @mysql
+# sudo yum install -y @mysql
 
-# # Start the MySQL service
-sudo systemctl start mysqld
+# # # Start the MySQL service
+# sudo systemctl start mysqld
 
-# # Enable MySQL to start on boot
-sudo systemctl enable mysqld
+# # # Enable MySQL to start on boot
+# sudo systemctl enable mysqld
 
-mysql -u root -e "ALTER USER 'root '@'localhost' IDENTIFIED BY 'Yashnahta291*';" -e "CREATE DATABASE IF NOT EXISTS database1;"
+# mysql -u root -e "ALTER USER 'root '@'localhost' IDENTIFIED BY 'Yashnahta291*';" -e "CREATE DATABASE IF NOT EXISTS database1;"
 
 # Setup and start application
 
@@ -28,20 +28,20 @@ pwd
 #create ENV file
 # Define your environment variables
 
-DB_HOST="localhost"
-DB_USER="root"
-DB_PASSWORD="Yashnahta291*"
-DB_DATABASE="database1"
+# DB_HOST="localhost"
+# DB_USER="root"
+# DB_PASSWORD="Yashnahta291*"
+# DB_DATABASE="database1"
 
-# Create or overwrite the .env file
-sudo cat > .env << EOF
-DB_HOST=$DB_HOST
-DB_USER=$DB_USER
-DB_PASSWORD=$DB_PASSWORD
-DB_DATABASE=$DB_DATABASE
-EOF
+# # Create or overwrite the .env file
+# sudo cat > .env << EOF
+# DB_HOST=$DB_HOST
+# DB_USER=$DB_USER
+# DB_PASSWORD=$DB_PASSWORD
+# DB_DATABASE=$DB_DATABASE
+# EOF
 
-echo ".env file created successfully."
+# echo ".env file created successfully."
 
 sudo npm i
 

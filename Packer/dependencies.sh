@@ -59,3 +59,9 @@ sudo systemctl enable app.service
 sudo systemctl start app.service
 sudo systemctl status app.service
 # journalctl -xe | grep app
+
+#install google cloud agent
+curl -sSO https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh
+sudo bash add-google-cloud-ops-agent-repo.sh --also-install
+sudo systemctl start google-cloud-ops-agent
+sudo systemctl status google-cloud-ops-agent

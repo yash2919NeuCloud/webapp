@@ -19,6 +19,7 @@
   "homepage": "https://github.com/yash2919/webapp-fork#readme",
   "dependencies": {
     "@google-cloud/logging": "^11.0.0",
+    "@google-cloud/logging-winston": "^6.0.0",
     "bcrypt": "^5.1.1",
     "express": "^4.18.2",
     "mysql2": "^3.9.1",

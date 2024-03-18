@@ -10,45 +10,39 @@ const User = require('./models/userModel');
 const healthzRouter = require('./routes/healthzRouter');
 const userRouter = require('./routes/userRouter');
 const { sequelize } = require('./config/config'); 
-const { Logging } = require('@google-cloud/logging');
+const winston = require('winston');
+const { LoggingWinston } = require('@google-cloud/logging-winston');
 
 sequelize.sync({ force: true }) 
 
-// const winston = require('winston');
-
-// const logger = winston.createLogger({
-//   format: winston.format.json(), // Output logs in JSON format
-//   transports: [
-//     new winston.transports.Console(), // Output logs to console
-//   ],
-// });
 
 
-// // Creates a client
-// const logging = new Logging();
+const loggingWinston = new LoggingWinston();
 
-// // Selects the log to write to
-// const log = logging.log('my-log');
+// Create a Winston logger that streams to Cloud Logging
+const logger = winston.createLogger({
+  level: 'info',
+  transports: [
+    new winston.transports.Console(),
+    // Add Cloud Logging
+    loggingWinston,
+  ],
+  format: winston.format.combine(
+    winston.format.timestamp(), // Add timestamp to logs
+    winston.format.errors({ stack: true }), // Include stack traces for errors
+    winston.format.json() // Output logs in JSON format
+  )
+});
 
-// // Write log entries
-// log.write(log.entry({ severity: 'info' }, 'This is an informational log message'));
-
-// // Example usage with Winston logger
-// logger.info('This is an informational log message', { additionalData: 'some extra information' });
-
+// Writes some log entries in JSON format
+logger.error({ message: 'warp nacelles offline', additionalData: { subsystem: 'engine' } });
+logger.info({ message: 'shields at 99%', additionalData: { system: 'defense' } });
 
 app.use((err, req, res, next) => {
   if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
   
     res.status(400).header('Cache-Control', 'no-cache').send();
   } else {
-    console.log(JSON.stringify({
-      timestamp: new Date().toISOString(),
-      method: req.method,
-      path: req.path,
-      query: req.query,
-      body: req.body
-    }));
     next();
   }
 });

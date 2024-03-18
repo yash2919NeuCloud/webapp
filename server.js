@@ -10,8 +10,32 @@ const User = require('./models/userModel');
 const healthzRouter = require('./routes/healthzRouter');
 const userRouter = require('./routes/userRouter');
 const { sequelize } = require('./config/config'); 
+const { Logging } = require('@google-cloud/logging');
 
 sequelize.sync({ force: true }) 
+
+const winston = require('winston');
+
+const logger = winston.createLogger({
+  format: winston.format.json(), // Output logs in JSON format
+  transports: [
+    new winston.transports.Console(), // Output logs to console
+  ],
+});
+
+
+// Creates a client
+const logging = new Logging();
+
+// Selects the log to write to
+const log = logging.log('my-log');
+
+// Write log entries
+log.write(log.entry({ severity: 'info' }, 'This is an informational log message'));
+
+// Example usage with Winston logger
+logger.info('This is an informational log message', { additionalData: 'some extra information' });
+
 
 app.use((err, req, res, next) => {
   if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {

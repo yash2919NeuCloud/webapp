@@ -14,27 +14,27 @@ const { Logging } = require('@google-cloud/logging');
 
 sequelize.sync({ force: true }) 
 
-const winston = require('winston');
+// const winston = require('winston');
 
-const logger = winston.createLogger({
-  format: winston.format.json(), // Output logs in JSON format
-  transports: [
-    new winston.transports.Console(), // Output logs to console
-  ],
-});
+// const logger = winston.createLogger({
+//   format: winston.format.json(), // Output logs in JSON format
+//   transports: [
+//     new winston.transports.Console(), // Output logs to console
+//   ],
+// });
 
 
-// Creates a client
-const logging = new Logging();
+// // Creates a client
+// const logging = new Logging();
 
-// Selects the log to write to
-const log = logging.log('my-log');
+// // Selects the log to write to
+// const log = logging.log('my-log');
 
-// Write log entries
-log.write(log.entry({ severity: 'info' }, 'This is an informational log message'));
+// // Write log entries
+// log.write(log.entry({ severity: 'info' }, 'This is an informational log message'));
 
-// Example usage with Winston logger
-logger.info('This is an informational log message', { additionalData: 'some extra information' });
+// // Example usage with Winston logger
+// logger.info('This is an informational log message', { additionalData: 'some extra information' });
 
 
 app.use((err, req, res, next) => {
@@ -42,6 +42,13 @@ app.use((err, req, res, next) => {
   
     res.status(400).header('Cache-Control', 'no-cache').send();
   } else {
+    console.log(JSON.stringify({
+      timestamp: new Date().toISOString(),
+      method: req.method,
+      path: req.path,
+      query: req.query,
+      body: req.body
+    }));
     next();
   }
 });

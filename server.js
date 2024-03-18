@@ -12,20 +12,17 @@ const userRouter = require('./routes/userRouter');
 const { sequelize } = require('./config/config'); 
 const winston = require('winston');
 const { LoggingWinston } = require('@google-cloud/logging-winston');
-
+const logFilePath = '/var/log/webapp.log';
 sequelize.sync({ force: true }) 
 
-
-
-const loggingWinston = new LoggingWinston();
 
 // Create a Winston logger that streams to Cloud Logging
 const logger = winston.createLogger({
   level: 'info',
   transports: [
     new winston.transports.Console(),
-    // Add Cloud Logging
-    loggingWinston,
+    new LoggingWinston(),
+    new winston.transports.File({ filename: logFilePath })
   ],
   format: winston.format.combine(
     winston.format.timestamp(), // Add timestamp to logs
@@ -35,12 +32,12 @@ const logger = winston.createLogger({
 });
 
 // Writes some log entries in JSON format
-logger.error({ message: 'warp nacelles offline', additionalData: { subsystem: 'engine' } });
-logger.info({ message: 'shields at 99%', additionalData: { system: 'defense' } });
+// logger.error({ message: 'warp nacelles offline', additionalData: { subsystem: 'engine' } });
+// logger.info({ message: 'shields at 99%', additionalData: { system: 'defense' } });
 
 app.use((err, req, res, next) => {
   if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
-  
+    logger.error({ message: 'Bad request', additionalData: { error: 'Invalid JSON' }});
     res.status(400).header('Cache-Control', 'no-cache').send();
   } else {
     next();
@@ -53,7 +50,7 @@ app.use('/', (req, res) => {
   res.status(404).send();
 });
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+   // console.log(`Server is running on port ${PORT}`);
   });
   
-  module.exports = app;
+  module.exports = app,logger;

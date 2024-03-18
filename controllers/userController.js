@@ -1,13 +1,13 @@
 const userService = require('../services/userService');
 const healthzService = require('../services/healthzService');
 const e = require('express');
-
+const logger = require('../server').logger;
 async function getUser(req, res) {
   try {
     const isDatabaseConnected = await healthzService.checkDatabaseConnection();
           } catch (error) {
-            
-            console.error('Error checking database connection:',error);
+            logger.error({message: 'Error checking database connection:', additionalData: { subsystem: error } });
+            //console.error('Error checking database connection:',error);
             return res.status(503).header('Cache-Control', 'no-cache').send();
           }
   try{    
@@ -59,7 +59,7 @@ async function getUser(req, res) {
       for (const key in req.body) {
         if (seenKeys.has(key)) {
           console.log('key:', key);
-          return res.status(400).json({ error: 'Duplicate keys in the request body' });
+          return res.status(400).send();
         }
         
         seenKeys.add(key);
@@ -93,6 +93,7 @@ async function getUser(req, res) {
           res.status(201).json(responseObject);
    
               } catch (error) {
+                logger.error({message: error });
                 console.error(error);
                 res.status(400).send();
                       }
@@ -102,7 +103,7 @@ async function getUser(req, res) {
     try {
       const isDatabaseConnected = await healthzService.checkDatabaseConnection();
             } catch (error) {
-              
+              logger.error({message: 'Error checking database connection:' , additionalData: { subsystem: error}});
               console.error('Error checking database connection:',error);
               return res.status(503).header('Cache-Control', 'no-cache').send();
             }
@@ -125,6 +126,7 @@ async function getUser(req, res) {
 
 
               } catch (error) {
+                logger.error({message: error });
                 console.log(error);
                 res.status(401).send();
               }

@@ -1,5 +1,5 @@
 const healthzService = require('../services/healthzService');
-
+const logger = require('../server').logger;
 async function healthz(req, res) {
   if (Object.keys(req.body).length > 0) {
     res.status(400).header('Cache-Control', 'no-cache').send();
@@ -9,21 +9,23 @@ async function healthz(req, res) {
         const isDatabaseConnected = await healthzService.checkDatabaseConnection();
         console.log('isDatabaseConnected:', isDatabaseConnected);
         if (isDatabaseConnected) {
+          logger.info({message: 'Database is connected'});
                   res.status(200).header('Cache-Control', 'no-cache').send();
                 } else {
-            
-                  console.error('Database is not connected');
+                  logger.error({message: 'Database is not connected'});
+                  //console.error('Database is not connected');
                   res.status(503).header('Cache-Control', 'no-cache').send();
                 }
               } catch (error) {
-                
-                console.error('Error checking database connection:',error);
+                logger.error({message: 'Database is not connected', additionalData: { subsystem: error } });
+               // console.error('Error checking database connection:',error);
                 res.status(503).header('Cache-Control', 'no-cache').send();
               }
   }
 
   async function notAllowed(req, res) {
-    console.log('notAllowed');
+    logger.error({message: 'notAllowed' });
+  //  console.log('notAllowed');
     res.status(405).header('Cache-Control', 'no-cache').send();
   }
 

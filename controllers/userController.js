@@ -1,7 +1,23 @@
 const userService = require('../services/userService');
 const healthzService = require('../services/healthzService');
 const e = require('express');
-const logger = require('../server').logger;
+const winston = require('winston');
+const { LoggingWinston } = require('@google-cloud/logging-winston');
+const logFilePath = '/var/log/webapp.log';
+const logger = winston.createLogger({
+  level: 'info',
+  transports: [
+    new winston.transports.Console(),
+    new LoggingWinston(),
+    new winston.transports.File({ filename: logFilePath })
+  ],
+  format: winston.format.combine(
+    winston.format.timestamp(), // Add timestamp to logs
+    winston.format.errors({ stack: true }), // Include stack traces for errors
+    winston.format.json() // Output logs in JSON format
+  )
+});
+
 async function getUser(req, res) {
   try {
     const isDatabaseConnected = await healthzService.checkDatabaseConnection();
@@ -93,8 +109,8 @@ async function getUser(req, res) {
           res.status(201).json(responseObject);
    
               } catch (error) {
-                logger.error({message: error });
-                console.error(error);
+                logger.error({message: error});
+             //   console.error(error);
                 res.status(400).send();
                       }
   }
@@ -103,7 +119,7 @@ async function getUser(req, res) {
     try {
       const isDatabaseConnected = await healthzService.checkDatabaseConnection();
             } catch (error) {
-              logger.error({message: 'Error checking database connection:' , additionalData: { subsystem: error}});
+              logger.error({message: error});
               console.error('Error checking database connection:',error);
               return res.status(503).header('Cache-Control', 'no-cache').send();
             }
@@ -123,7 +139,7 @@ async function getUser(req, res) {
       const { first_name, last_name, password } = req.body;
       const updatedUser = await userService.updateUser(authHeader,first_name, last_name, password);
       res.status(204).send();
-
+      logger.info({message: 'User updated'});
 
               } catch (error) {
                 logger.error({message: error });

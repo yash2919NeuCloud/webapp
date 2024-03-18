@@ -88,7 +88,7 @@ sudo bash add-google-cloud-ops-agent-repo.sh --also-install
 # sudo sed -i '1,/^logging:/{/^logging:/r /dev/stdin' -e 'd}' /etc/google-cloud-ops-agent/config.yaml <<<"$new_content"
 
 
-sudo cat > /etc/google-cloud-ops-agent/config.yaml << EOF
+sudo tee /etc/google-cloud-ops-agent/config.yaml > /dev/null << EOF
 logging:
   receivers:
     my-app-receiver:

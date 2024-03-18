@@ -18,11 +18,13 @@
   },
   "homepage": "https://github.com/yash2919/webapp-fork#readme",
   "dependencies": {
+    "@google-cloud/logging": "^11.0.0",
     "bcrypt": "^5.1.1",
     "express": "^4.18.2",
     "mysql2": "^3.9.1",
     "sequelize": "^6.36.0",
-    "sequelize-cli": "^6.6.2"
+    "sequelize-cli": "^6.6.2",
+    "winston": "^3.12.0"
   },
   "devDependencies": {
     "dotenv": "^16.4.3",

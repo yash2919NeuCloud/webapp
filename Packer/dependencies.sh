@@ -63,5 +63,29 @@ sudo systemctl status app.service
 #install google cloud agent
 sudo curl -sSO https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh
 sudo bash add-google-cloud-ops-agent-repo.sh --also-install
-sudo systemctl start google-cloud-ops-agent
-sudo systemctl status google-cloud-ops-agent
+
+new_content=$(cat <<EOF
+logging:
+  receivers:
+    my-app-receiver:
+      type: files
+      include_paths:
+        - /tmp/myapp.log
+      record_log_file_path: true
+  processors:
+    my-app-processor:
+      type: parse_json
+      time_key: time
+      time_format: "%Y-%m-%dT%H:%M:%S.%L%Z"
+  service:
+    pipelines:
+      default_pipeline:
+        receivers: [my-app-receiver]
+        processors: [my-app-processor]
+EOF
+)
+
+# Write the new content to the config file using sed
+sudo sed -i '1,/^logging:/{/^logging:/r /dev/stdin' -e 'd}' /etc/google-cloud-ops-agent/config.yaml <<<"$new_content"
+
+sudo systemctl restart google-cloud-ops-agent

@@ -92,7 +92,7 @@ async function getUser(req, res) {
             'Access-Control-Allow-Origin': '*',
             'Cache-Control': 'no-cache'
           });
-          
+          logger.debug({ message: 'New User Created' });
           res.status(201).json(responseObject);
    
               } catch (error) {

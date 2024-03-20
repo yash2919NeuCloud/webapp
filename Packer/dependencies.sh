@@ -66,7 +66,7 @@ sudo bash add-google-cloud-ops-agent-repo.sh --also-install
 
 sudo mkdir -p /var/log/webapp
 sudo touch /var/log/webapp/app.log
-sudo chmod a+w /var/log/webapp/app.log
+sudo chown csye6225:csye6225 /var/log/webapp/app.log
 
 sudo tee /etc/google-cloud-ops-agent/config.yaml > /dev/null << EOF
 logging:
@@ -81,6 +81,11 @@ logging:
       type: parse_json
       time_key: time
       time_format: "%Y-%m-%dT%H:%M:%S.%L%Z"
+    move_severity:
+      type: modify_fields
+      fields:
+        severity:
+          move_from: jsonPayload.severity
   service:
     pipelines:
       default_pipeline:

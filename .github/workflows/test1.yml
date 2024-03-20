@@ -35,4 +35,7 @@ jobs:
           
       - name: Run tests
         run: |
+          sudo mkdir -p /var/log/webapp
+          sudo touch /var/log/webapp/app.log
+          sudo chmod a+w /var/log/webapp/app.log
           npm test

@@ -18,8 +18,8 @@ try {
 const logger = winston.createLogger({
   level: 'info',
   transports: [
-    new winston.transports.Console(),
-    new LoggingWinston(),
+    // new winston.transports.Console(),
+    // new LoggingWinston(),
     new winston.transports.File({ filename: logFilePath })
   ],
   format: winston.format.combine(

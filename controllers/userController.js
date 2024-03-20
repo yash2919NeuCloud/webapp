@@ -14,7 +14,7 @@ async function getUser(req, res) {
   try{    
 
     if (Object.keys(req.body).length > 0 ) {
-    
+      logger.warn({ message: 'Invalid request body detected in getUser' });
       res.status(400).header('Cache-Control', 'no-cache').send();
       return;
     }
@@ -38,6 +38,7 @@ async function getUser(req, res) {
   
   res.status(200).json(responseObject);
   } catch (error) {
+    logger.error({ message: 'Error getting user:', error });
     res.status(401).send();
   }
   }
@@ -46,12 +47,12 @@ async function getUser(req, res) {
     try {
       const isDatabaseConnected = await healthzService.checkDatabaseConnection();
             } catch (error) {
-              
-              console.error('Error checking database connection:',error);
+              logger.error({ message: 'Error checking database connection:', error });
               return res.status(503).header('Cache-Control', 'no-cache').send();
             }
     try {
       if (Object.keys(req.body).length !== 4) {
+        logger.warn({ message: 'Invalid request body length detected in createUser' });
         res.status(400).header('Cache-Control', 'no-cache').send();
         return;
       }
@@ -59,7 +60,7 @@ async function getUser(req, res) {
 
       for (const key in req.body) {
         if (seenKeys.has(key)) {
-          console.log('key:', key);
+          logger.error({ message: 'Duplicate key detected in createUser', key });
           return res.status(400).send();
         }
         
@@ -70,6 +71,7 @@ async function getUser(req, res) {
       const allowedFields = ['first_name', 'last_name', 'password','username'];
   
       if (!updatedFields.every(field => allowedFields.includes(field))) {
+        logger.error({ message: 'Invalid field detected in createUser' });
         return res.status(400).send();
       }
         const { first_name, last_name, password, username } = req.body;
@@ -94,7 +96,7 @@ async function getUser(req, res) {
           res.status(201).json(responseObject);
    
               } catch (error) {
-                logger.error({message: error});
+                logger.error({ message: 'Error creating user:', error });
              //   console.error(error);
                 res.status(400).send();
                       }
@@ -104,13 +106,13 @@ async function getUser(req, res) {
     try {
       const isDatabaseConnected = await healthzService.checkDatabaseConnection();
             } catch (error) {
-              logger.error({message: error});
-              console.error('Error checking database connection:',error);
+              logger.error({ message: 'Error checking database connection:', error });
               return res.status(503).header('Cache-Control', 'no-cache').send();
             }
     try {
       
       if (Object.keys(req.body).length !== 3) {
+        logger.warn({ message: 'Invalid request body length detected in updateUser' });
         res.status(400).header('Cache-Control', 'no-cache').send();
         return;
       }
@@ -118,6 +120,7 @@ async function getUser(req, res) {
       const allowedFields = ['first_name', 'last_name', 'password'];
   
       if (!updatedFields.every(field => allowedFields.includes(field))) {
+        logger.error({ message: 'Invalid field detected in updateUser' });
         return res.status(400).send();
       }
       const authHeader = req.headers.authorization;
@@ -127,8 +130,7 @@ async function getUser(req, res) {
       logger.info({message: 'User updated'});
 
               } catch (error) {
-                logger.error({message: error });
-                console.log(error);
+                logger.error({ message: 'Error updating user:', error });
                 res.status(401).send();
               }
   }

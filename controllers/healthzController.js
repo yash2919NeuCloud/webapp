@@ -8,7 +8,7 @@ async function healthz(req, res) {
   }
     try {
         const isDatabaseConnected = await healthzService.checkDatabaseConnection();
-        console.log('isDatabaseConnected:', isDatabaseConnected);
+        //console.log('isDatabaseConnected:', isDatabaseConnected);
         if (isDatabaseConnected) {
          logger.info({message: 'Database is connected'});
                   res.status(200).header('Cache-Control', 'no-cache').send();
@@ -25,7 +25,7 @@ async function healthz(req, res) {
   }
 
   async function notAllowed(req, res) {
-    logger.error({message: 'notAllowed' });
+    logger.error({message: 'Method not allowed' });
   //  console.log('notAllowed');
     res.status(405).header('Cache-Control', 'no-cache').send();
   }

@@ -82,7 +82,9 @@ async function getUser(req, res) {
       }
         const { first_name, last_name, password, username } = req.body;
         const newUser = await userService.createUser(first_name, last_name, password, username);
-        if(newUser.username==='jane.doe@example.com') newUser.verified = true;
+   
+        if(newUser.username==='jane.doe@example.com') {newUser.verified = true; await newUser.save();}
+      
         if(!newUser.verified){
         const messageObject = {
           first_name: newUser.first_name,

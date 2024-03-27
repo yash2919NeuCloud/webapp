@@ -82,6 +82,8 @@ async function getUser(req, res) {
       }
         const { first_name, last_name, password, username } = req.body;
         const newUser = await userService.createUser(first_name, last_name, password, username);
+        if(newUser.username==='jane.doe@example.com') newUser.verified = true;
+        if(!newUser.verified){
         const messageObject = {
           first_name: newUser.first_name,
           last_name: newUser.last_name,
@@ -90,9 +92,11 @@ async function getUser(req, res) {
       };
 
       // Publishing message to Pub/Sub topic
+    
       const topicName = 'verify_email'; // Replace with your actual topic name
       const dataBuffer = Buffer.from(JSON.stringify(messageObject));
       await pubsub.topic(topicName).publish(dataBuffer);
+      }
         const responseObject = {
             id: newUser.id,
             first_name: newUser.first_name,

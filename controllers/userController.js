@@ -85,7 +85,7 @@ async function getUser(req, res) {
    
         // if(newUser.username==='jane.doe@example.com') {newUser.verified = true; await newUser.save();}
       
-        if(!newUser.verified){
+        if(newUser.verified===false){
         const messageObject = {
           first_name: newUser.first_name,
           last_name: newUser.last_name,

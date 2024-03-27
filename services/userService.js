@@ -92,7 +92,7 @@ async function verifyUser(id) {
   if (!user) {
     throw new Error('User not found');
   }
-  if(date.now() - user.timestamp > 2000 )
+  if(date.now() - user.timestamp > (2 * 60 * 1000) )
   {
     throw new Error('Verification Link Expired');
   }

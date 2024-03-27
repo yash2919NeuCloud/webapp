@@ -1,6 +1,6 @@
 const User =require('../models/userModel');
 const { use } = require('../routes/userRouter');
-
+const {logger} = require('../config/config');
 async function createUser(first_name, last_name, password, username ) {
 
     const existingUser = await User.findOne({ where: { username } });
@@ -92,7 +92,9 @@ async function verifyUser(id) {
   if (!user) {
     throw new Error('User not found');
   }
-  if(date.now() - user.timestamp > (2 * 60 * 1000) )
+  logger.info({message:Date.now()} );
+  logger.info({message:user.timestamp});
+  if(Date.now() - user.timestamp > (2 * 60 * 1000) )
   {
     throw new Error('Verification Link Expired');
   }

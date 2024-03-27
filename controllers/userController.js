@@ -173,8 +173,8 @@ async function getUser(req, res) {
         logger.info({message: 'User Verified'});
       }
       catch(error){
-        logger.error({ message: 'Error verifying user:', error });
-        res.status(400).send();
+        logger.error({ message: 'Link Expired', error });
+        res.status(410).send("Link Expired");
       }
   }
 

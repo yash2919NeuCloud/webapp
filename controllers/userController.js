@@ -2,7 +2,8 @@ const userService = require('../services/userService');
 const healthzService = require('../services/healthzService');
 const e = require('express');
 const {logger} = require('../config/config');
-
+const { PubSub } = require('@google-cloud/pubsub');
+const pubsub = new PubSub();
 async function getUser(req, res) {
   try {
     const isDatabaseConnected = await healthzService.checkDatabaseConnection();
@@ -20,6 +21,11 @@ async function getUser(req, res) {
     }
   const authHeader = req.headers.authorization;
   const User = await userService.getUser(authHeader);
+  // if(!User.verified){
+  //   logger.warn({ message: 'User not' });
+  //   res.status(401).send();
+  //  // return;
+  // }
   const responseObject = {
     id: User.id,
     first_name: User.first_name,
@@ -76,7 +82,17 @@ async function getUser(req, res) {
       }
         const { first_name, last_name, password, username } = req.body;
         const newUser = await userService.createUser(first_name, last_name, password, username);
+        const messageObject = {
+          first_name: newUser.first_name,
+          last_name: newUser.last_name,
+          username: newUser.username,
+          id: newUser.id
+      };
 
+      // Publishing message to Pub/Sub topic
+      const topicName = 'verify_email'; // Replace with your actual topic name
+      const dataBuffer = Buffer.from(JSON.stringify(messageObject));
+      await pubsub.topic(topicName).publish(dataBuffer);
         const responseObject = {
             id: newUser.id,
             first_name: newUser.first_name,
@@ -135,5 +151,26 @@ async function getUser(req, res) {
               }
   }
 
+  async function verifyUser(req, res) {
+    try {
+      const isDatabaseConnected = await healthzService.checkDatabaseConnection();
+            } catch (error) {
+              logger.error({ message: 'Error checking database connection:', error });
+              return res.status(503).header('Cache-Control', 'no-cache').send();
+            }
+      
+      try{
+        console.log(req.query);
+        const {id} = req.query;
+        const verifiedUser = await userService.verifyUser(id);
+        res.status(200).send();
+        logger.info({message: 'User Verified'});
+      }
+      catch(error){
+        logger.error({ message: 'Error verifying user:', error });
+        res.status(400).send();
+      }
+  }
 
-  module.exports = {getUser,updateUser,createUser };
+
+  module.exports = {getUser,updateUser,createUser ,verifyUser};

@@ -26,7 +26,7 @@ async function getUser(authHeader) {
   const credentials = Buffer.from(base64Credentials, 'base64').toString('utf-8');
   const [username, password] = credentials.split(':');
   const user = await User.findOne({ where: { username } });
-  
+
   if (!user) {
   
     throw new Error('User not found');
@@ -35,7 +35,10 @@ async function getUser(authHeader) {
    
     throw new Error('Invalid password');
   }
- 
+  if(!user.verified){
+    throw new Error('User not Verified');
+  }
+
   return user;
 }
 
@@ -45,8 +48,12 @@ async function updateUser(authHeader, first_name, last_name, newpass) {
   const credentials = Buffer.from(base64Credentials, 'base64').toString('utf-8');
   const [username, password] = credentials.split(':');
   const user = await User.findOne({ where: { username } });
+
   if (!user) {
     throw new Error('User not found');
+  }
+  if(!user.verified){
+    throw new Error('User not Verified');
   }
   if (!user.comparePassword(password)) {
     console.log('Password)',password);
@@ -66,4 +73,20 @@ async function updateUser(authHeader, first_name, last_name, newpass) {
   await user.save();
   return user;
 }
-module.exports = {createUser ,getUser,updateUser};
+
+async function verifyUser(id) {
+  const user = await User.findOne({ where: { id } });
+  if (!user) {
+    throw new Error('User not found');
+  }
+  if(date.now() - user.timestamp > 2000 )
+  {
+    throw new Error('Verification Link Expired');
+  }
+  user.verified = true;
+  await user.save();
+  return user;
+}
+
+
+module.exports = {createUser ,getUser,updateUser,verifyUser};

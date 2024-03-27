@@ -58,6 +58,14 @@ const bcrypt = require('bcrypt');
         notEmpty: true
       },
     },
+    verified: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+    timestamp:{
+      type: DataTypes.DATE,
+      allowNull: true
+    },
     account_created: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,

@@ -169,7 +169,7 @@ async function getUser(req, res) {
         console.log(req.query);
         const {id} = req.query;
         const verifiedUser = await userService.verifyUser(id);
-        res.status(200).send();
+        res.status(200).send("Email Verified");
         logger.info({message: 'User Verified'});
       }
       catch(error){

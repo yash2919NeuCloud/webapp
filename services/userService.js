@@ -90,15 +90,14 @@ async function updateUser(authHeader, first_name, last_name, newpass) {
 async function verifyUser(id) {
   const user = await User.findOne({ where: { id } });
   if (!user) {
-    logger.error({ message: 'User not found' });
     throw new Error('User not found');
   }
-  const currentTime = new Date();
-  const utcDate = user.exptimestamp;
-  logger.info({message:"Date check"},{message:currentTime.getTime()}, {message:utcDate.getTime()});
-  if(currentTime.getTime() > utcDate.getTime()  )
+  logger.info({message:"Datecheck"});
+  logger.info({message:Date.now()} );
+  logger.info({message:user.timestamp});
+  logger.info({message:user.exptimestamp});
+  if(Date.now() - exptimestamp > 0 )
   {
-    logger.error({message:"Date check"},{message:currentTime.getTime()}, {message:utcDate.getTime()});
     throw new Error('Verification Link Expired');
   }
   user.verified = true;

@@ -21,11 +21,11 @@ async function getUser(req, res) {
     }
   const authHeader = req.headers.authorization;
   const User = await userService.getUser(authHeader);
-  // if(!User.verified){
-  //   logger.warn({ message: 'User not' });
-  //   res.status(401).send();
-  //  // return;
-  // }
+  if(!User.verified){
+    logger.warn({ message: 'User not verified' });
+    res.status(403).send();
+   return;
+  }
   const responseObject = {
     id: User.id,
     first_name: User.first_name,
@@ -146,6 +146,12 @@ async function getUser(req, res) {
         return res.status(400).send();
       }
       const authHeader = req.headers.authorization;
+      const User = await userService.getUser(authHeader);
+      if(!User.verified){
+        logger.warn({ message: 'User not verified' });
+        res.status(403).send();
+       return;
+      }
       const { first_name, last_name, password } = req.body;
       const updatedUser = await userService.updateUser(authHeader,first_name, last_name, password);
       res.status(204).send();

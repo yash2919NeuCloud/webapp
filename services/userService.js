@@ -96,7 +96,7 @@ async function verifyUser(id) {
   logger.info({message:Date.now()} );
   logger.info({message:user.timestamp});
   logger.info({message:user.exptimestamp});
-  if(Date.now() - user.exptimestamp > 0 )
+  if(Date.now() - user.timestamp > (2 * 60 * 1000) )
   {
     throw new Error('Verification Link Expired');
   }

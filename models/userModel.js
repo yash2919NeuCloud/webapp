@@ -66,6 +66,10 @@ const bcrypt = require('bcrypt');
       type: DataTypes.DATE,
       allowNull: true
     },
+    exptimestamp:{
+    type: DataTypes.DATE,
+      allowNull: true
+    },
     account_created: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,

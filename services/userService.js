@@ -95,10 +95,10 @@ async function verifyUser(id) {
   }
   const currentTime = new Date();
   const utcDate = user.exptimestamp;
-  logger.info({message:"Date check"},{message:utcDate}, {message:user.exptimestamp});
+  logger.info({message:"Date check"},{message:currentTime.getTime()}, {message:utcDate.getTime()});
   if(currentTime.getTime() > utcDate.getTime()  )
   {
-    logger.error({message:"Date check"},{message:utcDate}, {message:user.exptimestamp});
+    logger.error({message:"Date check"},{message:currentTime.getTime()}, {message:utcDate.getTime()});
     throw new Error('Verification Link Expired');
   }
   user.verified = true;

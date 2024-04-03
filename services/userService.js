@@ -48,9 +48,9 @@ async function getUser(authHeader) {
    
     throw new Error('Invalid password');
   }
-  if(!user.verified){
-    throw new Error('User not Verified');
-  }
+  // if(!user.verified){
+  //   throw new Error('User not Verified');
+  // }
 
   return user;
 }
@@ -65,9 +65,9 @@ async function updateUser(authHeader, first_name, last_name, newpass) {
   if (!user) {
     throw new Error('User not found');
   }
-  if(!user.verified){
-    throw new Error('User not Verified');
-  }
+  // if(!user.verified){
+  //   throw new Error('User not Verified');
+  // }
   if (!user.comparePassword(password)) {
     console.log('Password)',password);
     throw new Error('Invalid password');

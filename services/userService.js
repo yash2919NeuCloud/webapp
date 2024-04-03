@@ -95,8 +95,6 @@ async function verifyUser(id) {
   }
   const currentTime = new Date();
   if(currentTime > user.exptimestamp  )
-  const currentTime = new Date();
-  if(currentTime > user.exptimestamp  )
   {
     logger.error({message:"Date check"},{message:currentTime}, {message:user.exptimestamp});
     throw new Error('Verification Link Expired');

@@ -95,7 +95,7 @@ async function getUser(req, res) {
 
       // Publishing message to Pub/Sub topic
     
-      const topicName = 'verify_email'; // Replace with your actual topic name
+      const topicName = 'verify_email'; 
       const dataBuffer = Buffer.from(JSON.stringify(messageObject));
       await pubsub.topic(topicName).publish(dataBuffer);
       }

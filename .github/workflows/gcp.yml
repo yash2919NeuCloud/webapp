@@ -14,20 +14,16 @@ jobs:
     gcloud-cli-setup:
       runs-on: ubuntu-latest
       steps:
-      - id: 'auth'
-        uses: 'google-github-actions/auth@v2'
-        with:
-          credentials_json: '${{ secrets.GCP_DEV_KEY }}'
+          - id: 'auth'
+            uses: 'google-github-actions/auth@v2'
+            with:
+             credentials_json: '${{ secrets.GCP_DEV_KEY }}'
+          - name: 'Set up Cloud SDK'
+            uses: 'google-github-actions/setup-gcloud@v2'
   
-      - name: 'Set up Cloud SDK'
-        uses: 'google-github-actions/setup-gcloud@v2'
-  
-      - name: 'Use gcloud CLI'
-        run: 'gcloud info'
+          - name: 'Use gcloud CLI'
+            run: 'gcloud info'
 
-    create-new-instance-template:
-        runs-on: ubuntu-latest
-        steps:
           - name: Create Instance Template
             run: |
                 gcloud compute instance-templates create instance-cli-2 \

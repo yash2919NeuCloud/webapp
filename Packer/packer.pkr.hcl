@@ -57,7 +57,7 @@ source "googlecompute" "custom-image" {
   disk_size           = var.disk_size
   disk_type           = var.disk_type
   image_family        = var.image_family
-  image_name          = var.image_name
+  // image_name          = var.image_name
   project_id          = var.PROJECT_ID
   source_image_family = var.source_image_family
   ssh_username        = var.ssh_username

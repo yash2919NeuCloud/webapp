@@ -61,7 +61,7 @@ jobs:
           packer init ./Packer/packer.pkr.hcl
 
       - name: Run Packer Configuration for Image Creation
-        id: packer_build
+        id: extract_image_name
         run: |
           packer_output=$(packer build -var 'GCP_DEV_KEY=${{ secrets.GCP_DEV_KEY }}' ./Packer/packer.pkr.hcl)
           echo $packer_output
@@ -70,12 +70,12 @@ jobs:
           echo "::set-output name=image_name::$image_name"
 
 
-      - name: Extract Image Name
-        id: extract_image_name
-        run: |
-              image_name=$(echo ${{ steps.extract_image_name.outputs.packer_output }} | sed -n "s/^.*A disk image was created in the '\([^']\+\)' project: \([^ ]\+\).*$/\2/p")
-              echo $image_name
-              echo "::set-output name=image_name::$image_name"
+      # - name: Extract Image Name
+      #   id: extract_image_name
+      #   run: |
+      #         image_name=$(echo ${{ steps.extract_image_name.outputs.packer_output }} | sed -n "s/^.*A disk image was created in the '\([^']\+\)' project: \([^ ]\+\).*$/\2/p")
+      #         echo $image_name
+      #         echo "::set-output name=image_name::$image_name"
 
       - name: Set up gcloud CLI
         id: 'auth'

@@ -15,11 +15,11 @@ describe('Integration Tests', () => {
   console.log('DB_DATABASE', process.env.DB_DATABASE)
 
   beforeAll(async () => {
-    await sequelize.sync({ force: true }) 
+    await sequelize.sync() 
 })
 
 afterAll(async () => {
-  await sequelize.sync({ force: true }) 
+  await sequelize.sync() 
 })
 
   it('Test 1: Create an account and validate account existence with GET call', async () => {

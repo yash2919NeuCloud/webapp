@@ -64,12 +64,12 @@ jobs:
         id: packer_build
         run: |
           packer_output=$(packer build -var 'GCP_DEV_KEY=${{ secrets.GCP_DEV_KEY }}' ./Packer/packer.pkr.hcl)
-          echo "$packer_output"
+          echo $packer_output
 
       - name: Extract Image Name
         id: extract_image_name
         run: |
-              image_name=$(echo "${{ steps.packer_build.outputs.packer_output  }}"  | sed -n "s/^.*A disk image was created in the '\([^']\+\)' project: \([^ ]\+\).*$/\2/p")
+              image_name=$(echo ${{ steps.packer_build.outputs.packer_output  }}  | sed -n "s/^.*A disk image was created in the '\([^']\+\)' project: \([^ ]\+\).*$/\2/p")
               echo $image_name
 
       - name: Set up gcloud CLI

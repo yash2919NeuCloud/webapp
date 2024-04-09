@@ -4,9 +4,10 @@ env:
   DB_DATABASE: ${{ secrets.DB_DATABASE }}
   DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
   DB_HOST: ${{ secrets.DB_HOST }}
-on:
-  push:
-    branches: [ "main" ]
+# on:
+#   push:
+#     branches: [ "main" ]
+on: [push, pull_request]
 
     
 jobs:
@@ -60,5 +61,71 @@ jobs:
           packer init ./Packer/packer.pkr.hcl
 
       - name: Run Packer Configuration for Image Creation
+        id: packer_build
         run: |
              packer build -var 'GCP_DEV_KEY= ${{ secrets.GCP_DEV_KEY }}' ./Packer/packer.pkr.hcl
+        env:
+          PACKER_LOG: ${{ steps.packer_build.outputs.stdout }}
+
+      - name: Extract Image Name
+        id: extract_image_name
+          # Use a regex pattern to extract the image name from the Packer output
+        run: |
+            image_name=$(echo "${{ env.PACKER_LOG }}" | grep -oP "(?<=A disk image was created in the '.+' project: ).+")
+            echo "::set-output name=image_name::$image_name"
+
+      - name: Set up gcloud CLI
+        id: 'auth'
+        uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: '${{ secrets.GCP_DEV_KEY }}'
+
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v2'
+  
+      - name: 'Use gcloud CLI'
+        run: 'gcloud info'
+
+      - name: Create Instance Template
+        run: |
+                gcloud compute instance-templates create ${{ steps.extract_image_name.outputs.image_name }} \
+                --project=devproj-414701 \
+                --machine-type=e2-medium \
+                --network-interface=network-tier=PREMIUM,subnet=webapp \
+                --instance-template-region=us-east1 \
+                --maintenance-policy=MIGRATE \
+                --provisioning-model=STANDARD \
+                --service-account=service-account-1@devproj-414701.iam.gserviceaccount.com \
+                --scopes=https://www.googleapis.com/auth/cloud-platform \
+                --region=us-east1 \
+                --tags=allow-health-check,http-server,https-server,lb-health-check \
+                --create-disk=auto-delete=yes,boot=yes,device-name=instance-template-20240407-234656,image=projects/devproj-414701/global/images/${{ steps.extract_image_name.outputs.image_name }},mode=rw,size=100,type=pd-balanced \
+                --metadata=startup-script='#!/bin/bash
+                  if [ ! -f "/home/centos/.env" ]; then
+                    sudo touch /home/centos/.env
+                  fi
+                  sudo echo "DB_HOST=${{ secrets.DB_GCP_HOST }}" > /home/centos/.env
+                  sudo echo "DB_USER=${{ secrets.DB_GCP_USER }}" >> /home/centos/.env
+                  sudo echo "DB_PASSWORD=${{ secrets.DB_GCP_PASSWORD }}" >> /home/centos/.env
+                  sudo echo "DB_DATABASE=${{ secrets.DB_GCP_DATABASE }}" >> /home/centos/.env'
+
+      - name: Set Instance Template for Managed Instance Group
+        run: |
+              gcloud compute instance-groups managed set-instance-template web-instance-group-manager \
+                --project=devproj-414701 \
+                --region=us-east1 \
+                --template=projects/devproj-414701/regions/us-east1/instanceTemplates/${{ steps.extract_image_name.outputs.image_name }}
+
+      - name: Start Rolling Update
+        run: |
+                  gcloud compute instance-groups managed rolling-action start-update web-instance-group-manager \
+                    --project=devproj-414701 \
+                    --type=proactive \
+                    --version=template=projects/devproj-414701/regions/us-east1/instanceTemplates/${{ steps.extract_image_name.outputs.image_name }} \
+                    --region=us-east1
+
+      - name: Check Version Target Reached
+        run: |
+                 gcloud compute instance-groups managed wait-until web-instance-group-manager \
+                 --version-target-reached \
+                 --region=us-east1

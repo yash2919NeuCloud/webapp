@@ -11,7 +11,7 @@ const healthzRouter = require('./routes/healthzRouter');
 const userRouter = require('./routes/userRouter');
 const { sequelize } = require('./config/config'); 
 const {logger} = require('./config/config');
-sequelize.sync({ force: true }) 
+sequelize.sync() 
 
 
 app.use((err, req, res, next) => {

@@ -70,7 +70,7 @@ jobs:
       - name: Extract Image Name
         id: extract_image_name
         run: |
-              image_name=$(echo " ${{ secrets.GCP_DEV_KEY }}" | sed -n "s/^.*A disk image was created in the '\([^']\+\)' project: \([^ ]\+\).*$/\2/p")
+              image_name=$(echo "${{ env.PACKER_LOG }}"  | sed -n "s/^.*A disk image was created in the '\([^']\+\)' project: \([^ ]\+\).*$/\2/p")
               echo "IMAGE_NAME=$image_name" >> $GITHUB_ENV
 
       - name: Set up gcloud CLI

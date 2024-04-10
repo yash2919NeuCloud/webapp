@@ -107,14 +107,14 @@ jobs:
 
       - name: Set Instance Template for Managed Instance Group
         run: |
-              gcloud compute instance-groups managed set-instance-template web-instance-group-manager \
+              gcloud compute instance-groups managed set-instance-template ${{ secrets.GROUP_MANAGER }}  \
                 --project=${{ secrets.PROJECT }} \
                 --region=${{ secrets.REGION }} \
                 --template=projects/${{ secrets.PROJECT }}/regions/${{ secrets.REGION }}/instanceTemplates/${{ steps.extract_image_name.outputs.image_name }}
 
       - name: Start Rolling Update
         run: |
-                  gcloud compute instance-groups managed rolling-action start-update web-instance-group-manager \
+                  gcloud compute instance-groups managed rolling-action start-update ${{ secrets.GROUP_MANAGER }} \
                     --project=${{ secrets.PROJECT }} \
                     --type=proactive \
                     --version=template=projects/${{ secrets.PROJECT }}/regions/${{ secrets.REGION }}/instanceTemplates/${{ steps.extract_image_name.outputs.image_name }} \
@@ -122,6 +122,6 @@ jobs:
 
       - name: Check Version Target Reached
         run: |
-                 gcloud compute instance-groups managed wait-until web-instance-group-manager \
+                 gcloud compute instance-groups managed wait-until ${{ secrets.GROUP_MANAGER }} \
                  --version-target-reached \
                  --region=${{ secrets.REGION }}

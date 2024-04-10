@@ -84,7 +84,7 @@ jobs:
                 echo ${{ steps.extract_image_name.outputs.image_name }}
                 echo ${{ secrets.KEY_RING }}
                 echo ${{ secrets.VM_KEY }}
-                gcloud compute instance-templates create instance_template_${{ steps.extract_image_name.outputs.image_name }} \
+                gcloud compute instance-templates create instance-template${{ steps.extract_image_name.outputs.image_name }} \
                 --project=${{ secrets.PROJECT }} \
                 --machine-type=e2-medium \
                 --network-interface=network-tier=PREMIUM,subnet=webapp \
@@ -110,14 +110,14 @@ jobs:
               gcloud compute instance-groups managed set-instance-template ${{ secrets.GROUP_MANAGER }}  \
                 --project=${{ secrets.PROJECT }} \
                 --region=${{ secrets.REGION }} \
-                --template=projects/${{ secrets.PROJECT }}/regions/${{ secrets.REGION }}/instanceTemplates/instance_template_${{ steps.extract_image_name.outputs.image_name }}
+                --template=projects/${{ secrets.PROJECT }}/regions/${{ secrets.REGION }}/instanceTemplates/instance-template${{ steps.extract_image_name.outputs.image_name }}
 
       - name: Start Rolling Update
         run: |
                   gcloud compute instance-groups managed rolling-action start-update ${{ secrets.GROUP_MANAGER }} \
                     --project=${{ secrets.PROJECT }} \
                     --type=proactive \
-                    --version=template=projects/${{ secrets.PROJECT }}/regions/${{ secrets.REGION }}/instanceTemplates/instance_template_${{ steps.extract_image_name.outputs.image_name }} \
+                    --version=template=projects/${{ secrets.PROJECT }}/regions/${{ secrets.REGION }}/instanceTemplates/instance-template${{ steps.extract_image_name.outputs.image_name }} \
                     --region=${{ secrets.REGION }}
 
       - name: Check Version Target Reached

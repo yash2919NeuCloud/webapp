@@ -103,7 +103,7 @@ jobs:
                 --scopes=https://www.googleapis.com/auth/cloud-platform \
                 --region=us-east1 \
                 --tags=allow-health-check,http-server,https-server,lb-health-check \
-                --create-disk=auto-delete=yes,boot=yes,device-name=instance-template-20240407-234656,image=projects/devproj-414701/global/images/${{ steps.extract_image_name.outputs.image_name }},mode=rw,size=100,type=pd-balanced \
+                --create-disk=auto-delete=yes,boot=yes,device-name=instance-template-20240407-234656,image=projects/devproj-414701/global/images/${{ steps.extract_image_name.outputs.image_name }},kms-key=projects/devproj-414701/locations/us-east1/keyRings/${{ secrets.key_ring }}/cryptoKeys/${{ secrets.vm_key }},mode=rw,size=100,type=pd-balanced \
                 --metadata=startup-script='#!/bin/bash
                   if [ ! -f "/home/centos/.env" ]; then
                     sudo touch /home/centos/.env

@@ -69,14 +69,6 @@ jobs:
           echo $image_name
           echo "::set-output name=image_name::$image_name"
 
-
-      # - name: Extract Image Name
-      #   id: extract_image_name
-      #   run: |
-      #         image_name=$(echo ${{ steps.extract_image_name.outputs.packer_output }} | sed -n "s/^.*A disk image was created in the '\([^']\+\)' project: \([^ ]\+\).*$/\2/p")
-      #         echo $image_name
-      #         echo "::set-output name=image_name::$image_name"
-
       - name: Set up gcloud CLI
         id: 'auth'
         uses: 'google-github-actions/auth@v2'
@@ -93,17 +85,17 @@ jobs:
         run: |
                 echo ${{ steps.extract_image_name.outputs.image_name }}
                 gcloud compute instance-templates create ${{ steps.extract_image_name.outputs.image_name }} \
-                --project=devproj-414701 \
+                --project=${{ secrets.PROJECT }} \
                 --machine-type=e2-medium \
                 --network-interface=network-tier=PREMIUM,subnet=webapp \
-                --instance-template-region=us-east1 \
+                --instance-template-region=${{ secrets.REGION }} \
                 --maintenance-policy=MIGRATE \
                 --provisioning-model=STANDARD \
-                --service-account=service-account-1@devproj-414701.iam.gserviceaccount.com \
+                --service-account=${{ secrets.SERVICE_ACC }} \
                 --scopes=https://www.googleapis.com/auth/cloud-platform \
-                --region=us-east1 \
+                --region=${{ secrets.REGION }} \
                 --tags=allow-health-check,http-server,https-server,lb-health-check \
-                --create-disk=auto-delete=yes,boot=yes,device-name=instance-template-20240407-234656,image=projects/devproj-414701/global/images/${{ steps.extract_image_name.outputs.image_name }},kms-key=projects/devproj-414701/locations/us-east1/keyRings/${{ secrets.key_ring }}/cryptoKeys/${{ secrets.vm_key }},mode=rw,size=100,type=pd-balanced \
+                --create-disk=auto-delete=yes,boot=yes,image=projects/${{ secrets.PROJECT }}/global/images/${{ steps.extract_image_name.outputs.image_name }},kms-key=projects/${{ secrets.PROJECT }}/locations/${{ secrets.REGION }}/keyRings/${{ secrets.key_ring }}/cryptoKeys/${{ secrets.vm_key }},mode=rw,size=100,type=pd-balanced \
                 --metadata=startup-script='#!/bin/bash
                   if [ ! -f "/home/centos/.env" ]; then
                     sudo touch /home/centos/.env
@@ -116,20 +108,20 @@ jobs:
       - name: Set Instance Template for Managed Instance Group
         run: |
               gcloud compute instance-groups managed set-instance-template web-instance-group-manager \
-                --project=devproj-414701 \
-                --region=us-east1 \
-                --template=projects/devproj-414701/regions/us-east1/instanceTemplates/${{ steps.extract_image_name.outputs.image_name }}
+                --project=${{ secrets.PROJECT }} \
+                --region=${{ secrets.REGION }} \
+                --template=projects/${{ secrets.PROJECT }}/regions/${{ secrets.REGION }}/instanceTemplates/${{ steps.extract_image_name.outputs.image_name }}
 
       - name: Start Rolling Update
         run: |
                   gcloud compute instance-groups managed rolling-action start-update web-instance-group-manager \
-                    --project=devproj-414701 \
+                    --project=${{ secrets.PROJECT }} \
                     --type=proactive \
-                    --version=template=projects/devproj-414701/regions/us-east1/instanceTemplates/${{ steps.extract_image_name.outputs.image_name }} \
-                    --region=us-east1
+                    --version=template=projects/${{ secrets.PROJECT }}/regions/${{ secrets.REGION }}/instanceTemplates/${{ steps.extract_image_name.outputs.image_name }} \
+                    --region=${{ secrets.REGION }}
 
       - name: Check Version Target Reached
         run: |
                  gcloud compute instance-groups managed wait-until web-instance-group-manager \
                  --version-target-reached \
-                 --region=us-east1
+                 --region=${{ secrets.REGION }}
